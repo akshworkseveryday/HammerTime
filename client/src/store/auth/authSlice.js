@@ -9,6 +9,7 @@ export const checkAuth = createAsyncThunk(
       const response = await api.get(`/user`);
       return response.data;
     } catch (error) {
+      localStorage.removeItem("auth_token");
       return rejectWithValue("Not authenticated");
     }
   },
@@ -19,7 +20,11 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      await api.post(`/auth/login`, { email, password });
+      const res = await api.post(`/auth/login`, { email, password });
+      const token = res.data?.token;
+      if (token) {
+        localStorage.setItem("auth_token", token);
+      }
 
       const response = await api.get(`/user`);
 
@@ -35,7 +40,11 @@ export const signup = createAsyncThunk(
   "auth/signup",
   async ({ name, email, password }, { rejectWithValue }) => {
     try {
-      await api.post(`/auth/signup`, { name, email, password });
+      const res = await api.post(`/auth/signup`, { name, email, password });
+      const token = res.data?.token;
+      if (token) {
+        localStorage.setItem("auth_token", token);
+      }
 
       const response = await api.get(`/user`);
 
@@ -52,8 +61,10 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await api.post(`/auth/logout`, {});
+      localStorage.removeItem("auth_token");
       return null;
     } catch (error) {
+      localStorage.removeItem("auth_token");
       return rejectWithValue("Logout failed");
     }
   },

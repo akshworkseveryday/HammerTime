@@ -17,12 +17,25 @@ export const initSocket = (server) => {
     pingInterval: 25000,
   });
 
-  // Authenticate socket connections using JWT from cookies
+  // Authenticate socket connections using JWT from cookies or handshake auth/headers
   io.use(async (socket, next) => {
     try {
       const cookies = socket.handshake.headers.cookie || "";
       const tokenMatch = cookies.match(/auth_token=([^;]+)/);
-      const token = tokenMatch?.[1];
+      let token = tokenMatch?.[1];
+
+      // Fallback 1: Check socket.handshake.auth.token
+      if (!token && socket.handshake.auth?.token) {
+        token = socket.handshake.auth.token;
+      }
+
+      // Fallback 2: Check Authorization header in handshake
+      if (!token && socket.handshake.headers.authorization) {
+        const parts = socket.handshake.headers.authorization.split(" ");
+        if (parts.length === 2 && parts[0] === "Bearer") {
+          token = parts[1];
+        }
+      }
 
       if (!token) {
         return next(new Error("Authentication required"));

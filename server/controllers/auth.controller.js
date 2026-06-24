@@ -51,7 +51,7 @@ export const handleUserLogin = async (req, res) => {
     });
     await login.save();
 
-    return res.status(200).json({ message: "Login Successful" });
+    return res.status(200).json({ message: "Login Successful", token });
   } catch (error) {
     console.error("Login Error:", error);
     return res.status(500).json({ error: "Server error from handle login" });
@@ -117,7 +117,7 @@ export const handleUserSignup = async (req, res) => {
     // Set HTTP-only cookie
     setCookie(res, token);
 
-    return res.status(201).json({ message: "User registered successfully" });
+    return res.status(201).json({ message: "User registered successfully", token });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Server error" });

@@ -20,6 +20,10 @@ export const getSocket = () => {
 
 export const connectSocket = () => {
   const s = getSocket();
+  const token = localStorage.getItem("auth_token");
+  if (token) {
+    s.auth = { token };
+  }
   if (!s.connected) {
     s.connect();
   }
