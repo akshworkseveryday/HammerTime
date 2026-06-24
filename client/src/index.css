@@ -1,14 +1,222 @@
 @import "tailwindcss";
 
 @layer base {
-    body {
-        @apply bg-stone-50 text-gray-900 antialiased;
-    }
+  body {
+    background-color: #fdfaf2 !important; /* Creamy background */
+    color: #2a2421 !important; /* Charcoal text */
+    font-family: 'Share Tech Mono', monospace !important;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'VT323', monospace !important;
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Subtle Retro Paper overlay instead of dark CRT scanlines */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    rgba(42, 36, 33, 0) 50%, 
+    rgba(42, 36, 33, 0.04) 50%
+  );
+  background-size: 100% 6px;
+  z-index: 999999;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Soft retro glows */
+.crt-glow {
+  text-shadow: 0 0 4px rgba(242, 120, 93, 0.3) !important;
+}
+
+.crt-glow-green {
+  text-shadow: 0 0 4px rgba(125, 168, 159, 0.3) !important;
+}
+
+.crt-glow-cyan {
+  text-shadow: 0 0 4px rgba(125, 168, 159, 0.3) !important;
+}
+
+.crt-glow-pink {
+  text-shadow: 0 0 4px rgba(242, 120, 93, 0.3) !important;
+}
+
+/* Beveled Brutalist/Retro layout container cards - Cream background, charcoal borders, Coral/Teal/Peach shadows */
+.retro-card {
+  background-color: #fdfaf2 !important; /* Cream */
+  border: 3px solid #2a2421 !important; /* Charcoal border */
+  box-shadow: 5px 5px 0px 0px #f2785d !important; /* Soft Coral shadow */
+  border-radius: 0px !important;
+  color: #2a2421 !important;
+}
+
+.retro-card-cyan {
+  background-color: #fdfaf2 !important;
+  border: 3px solid #2a2421 !important;
+  box-shadow: 5px 5px 0px 0px #7da89f !important; /* Soft Teal shadow */
+  border-radius: 0px !important;
+  color: #2a2421 !important;
+}
+
+.retro-card-pink {
+  background-color: #fdfaf2 !important;
+  border: 3px solid #2a2421 !important;
+  box-shadow: 5px 5px 0px 0px #ffb09c !important; /* Soft Peach shadow */
+  border-radius: 0px !important;
+  color: #2a2421 !important;
+}
+
+.retro-card-amber {
+  background-color: #fdfaf2 !important;
+  border: 3px solid #2a2421 !important;
+  box-shadow: 5px 5px 0px 0px #e5b25d !important; /* Soft Gold shadow */
+  border-radius: 0px !important;
+  color: #2a2421 !important;
+}
+
+/* Buttons - Coral, Teal, Peach */
+.retro-btn {
+  background-color: #f2785d !important; /* Coral */
+  color: #fdfaf2 !important; /* Cream */
+  border: 3px solid #2a2421 !important;
+  box-shadow: 4px 4px 0px 0px #2a2421 !important;
+  border-radius: 0px !important;
+  font-family: 'VT323', monospace !important;
+  font-size: 1.25rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.5rem 1.25rem !important;
+  transition: all 0.1s !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.retro-btn:hover:not(:disabled) {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 2px 2px 0px 0px #2a2421 !important;
+}
+.retro-btn:active:not(:disabled) {
+  transform: translate(4px, 4px) !important;
+  box-shadow: 0px 0px 0px 0px #2a2421 !important;
+}
+.retro-btn:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: 4px 4px 0px 0px #2a2421 !important;
+}
+
+.retro-btn-cyan {
+  background-color: #7da89f !important; /* Soft Teal */
+  color: #fdfaf2 !important;
+  border: 3px solid #2a2421 !important;
+  box-shadow: 4px 4px 0px 0px #2a2421 !important;
+  border-radius: 0px !important;
+  font-family: 'VT323', monospace !important;
+  font-size: 1.25rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.5rem 1.25rem !important;
+  transition: all 0.1s !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.retro-btn-cyan:hover:not(:disabled) {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 2px 2px 0px 0px #2a2421 !important;
+}
+.retro-btn-cyan:active:not(:disabled) {
+  transform: translate(4px, 4px) !important;
+  box-shadow: 0px 0px 0px 0px #2a2421 !important;
+}
+.retro-btn-cyan:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: 4px 4px 0px 0px #2a2421 !important;
+}
+
+.retro-btn-pink {
+  background-color: #ffb09c !important; /* Soft Peach */
+  color: #2a2421 !important;
+  border: 3px solid #2a2421 !important;
+  box-shadow: 4px 4px 0px 0px #2a2421 !important;
+  border-radius: 0px !important;
+  font-family: 'VT323', monospace !important;
+  font-size: 1.25rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.5rem 1.25rem !important;
+  transition: all 0.1s !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.retro-btn-pink:hover:not(:disabled) {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 2px 2px 0px 0px #2a2421 !important;
+}
+.retro-btn-pink:active:not(:disabled) {
+  transform: translate(4px, 4px) !important;
+  box-shadow: 0px 0px 0px 0px #2a2421 !important;
+}
+.retro-btn-pink:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: 4px 4px 0px 0px #2a2421 !important;
+}
+
+/* Custom inputs */
+.retro-input {
+  background-color: #fdfaf2 !important;
+  color: #2a2421 !important;
+  border: 2px solid #2a2421 !important;
+  border-radius: 0px !important;
+  font-family: 'Share Tech Mono', monospace !important;
+}
+.retro-input:focus {
+  border-color: #f2785d !important;
+  box-shadow: 0 0 6px rgba(242, 120, 93, 0.4) !important;
+  outline: none !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #fdfaf2;
+  border-left: 2px solid #2a2421;
+  border-top: 2px solid #2a2421;
+}
+::-webkit-scrollbar-thumb {
+  background: #f2785d;
+  border: 2px solid #fdfaf2;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7da89f;
 }
 
 /* View Transitions — page cross-fade */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-    animation-duration: 0.25s;
-    animation-timing-function: ease;
+  animation-duration: 0.25s;
+  animation-timing-function: ease;
 }

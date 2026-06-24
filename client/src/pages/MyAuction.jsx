@@ -28,56 +28,31 @@ export const MyAuction = () => {
       : auctions?.filter((auction) => auction.itemCategory === filter);
 
   return (
-    <div className="min-h-screen bg-gray-50/80">
+    <div className="min-h-screen bg-[#fdfaf2] text-[#2a2421] font-mono">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-indigo-600 transition mb-6 group"
+          className="inline-flex items-center gap-2 border-2 border-[#2a2421] px-4 py-1.5 hover:bg-[#2a2421]/10 transition mb-6 uppercase font-bold text-xs bg-white"
         >
-          <svg
-            className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          Back
+          &larr; BACK
         </button>
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">My Auctions</h1>
-            <p className="text-sm text-gray-400 mt-1">
-              {pagination.total || 0} listing
-              {(pagination.total || 0) !== 1 && "s"}
+            <h1 className="text-3xl font-bold uppercase tracking-wider text-[#2a2421] crt-glow">
+              MY LISTINGS
+            </h1>
+            <p className="text-xs text-[#2a2421]/60 mt-1 uppercase">
+              REGISTERED ENTRIES: {pagination.total || 0} ITEMS ON RECORD
             </p>
           </div>
           <Link
             to="/create"
-            className="inline-flex items-center gap-2 bg-indigo-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-700 active:scale-[0.97] transition-all shadow-sm shadow-indigo-200"
+            className="retro-btn"
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            New Auction
+            + NEW LISTING
           </Link>
         </div>
 
@@ -89,13 +64,13 @@ export const MyAuction = () => {
                 <button
                   key={category}
                   onClick={() => setFilter(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  className={`px-3 py-1 border-2 text-xs font-bold uppercase transition-all ${
                     filter === category
-                      ? "bg-indigo-600 text-white shadow-sm"
-                      : "bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:text-gray-900"
+                      ? "bg-[#f2785d] text-[#fdfaf2] border-[#2a2421] shadow-[2px_2px_0px_0px_#7da89f]"
+                      : "text-[#2a2421] border-[#2a2421] hover:bg-[#f2785d]/10 bg-white"
                   }`}
                 >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                  {category}
                 </button>
               ))}
             </div>
@@ -104,45 +79,29 @@ export const MyAuction = () => {
 
         {/* Results count */}
         {filteredAuctions.length > 0 && (
-          <p className="text-sm text-gray-400 mb-5">
-            {filter === "all" ? "All listings" : filter}
-            <span className="ml-1 text-gray-300">
-              ({filteredAuctions.length})
-            </span>
+          <p className="text-xs text-[#2a2421]/50 uppercase mb-5">
+            FILTER: {filter} &gt;&gt; STREAM COUNT: {filteredAuctions.length}
           </p>
         )}
 
         {filteredAuctions.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-2xl border border-gray-200/80 shadow-sm">
-            <svg
-              className="w-12 h-12 text-gray-200 mx-auto mb-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-              />
-            </svg>
-            <p className="text-gray-400 mb-4">
+          <div className="text-center py-20 bg-[#fdfaf2] border-2 border-dashed border-[#2a2421]/20 flex flex-col items-center justify-center gap-3">
+            <p className="text-xs text-[#2a2421]/50 uppercase font-bold">
               {filter === "all"
-                ? "You haven't created any auctions yet"
-                : "No auctions in this category"}
+                ? "NO AUCTIONS CREATED BY USER TERMINAL"
+                : "NO LISTINGS MATCHING THIS FILTER MATRIX"}
             </p>
             {filter === "all" && (
               <Link
                 to="/create"
-                className="inline-flex items-center gap-2 bg-indigo-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition-all shadow-sm shadow-indigo-200"
+                className="retro-btn-pink text-xs uppercase"
               >
-                Create your first auction
+                Create your first listing
               </Link>
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredAuctions.map((auction) => (
               <AuctionCard key={auction._id} auction={auction} />
             ))}
@@ -151,23 +110,23 @@ export const MyAuction = () => {
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-10">
+          <div className="flex items-center justify-center gap-3 mt-10">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="px-4 py-2 text-sm font-medium rounded-xl border border-gray-200 bg-white text-gray-600 hover:border-indigo-300 hover:text-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              className="px-3 py-1.5 text-xs font-bold uppercase border-2 border-[#2a2421] bg-white text-[#2a2421] hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
             >
-              Previous
+              PREV
             </button>
             {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(
               (p) => (
                 <button
                   key={p}
                   onClick={() => setPage(p)}
-                  className={`w-10 h-10 rounded-xl text-sm font-semibold transition ${
+                  className={`w-9 h-9 border-2 text-xs font-bold uppercase transition ${
                     p === page
-                      ? "bg-indigo-600 text-white shadow-sm"
-                      : "bg-white text-gray-600 border border-gray-200 hover:border-indigo-300 hover:text-indigo-600"
+                      ? "bg-[#f2785d] text-[#fdfaf2] border-[#2a2421] shadow-[2px_2px_0px_0px_#7da89f]"
+                      : "bg-white text-[#2a2421] border-[#2a2421] hover:bg-[#f2785d]/10"
                   }`}
                 >
                   {p}
@@ -179,9 +138,9 @@ export const MyAuction = () => {
                 setPage((p) => Math.min(pagination.totalPages, p + 1))
               }
               disabled={page === pagination.totalPages}
-              className="px-4 py-2 text-sm font-medium rounded-xl border border-gray-200 bg-white text-gray-600 hover:border-indigo-300 hover:text-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              className="px-3 py-1.5 text-xs font-bold uppercase border-2 border-[#2a2421] bg-white text-[#2a2421] hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
             >
-              Next
+              NEXT
             </button>
           </div>
         )}
@@ -189,3 +148,4 @@ export const MyAuction = () => {
     </div>
   );
 };
+export default MyAuction;

@@ -43,40 +43,28 @@ const Signup = () => {
   if (loading) return <LoadingScreen />;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[#fdfaf2] text-[#2a2421] font-mono flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 rounded-xl mb-4">
-            <svg
-              className="w-6 h-6 text-emerald-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-              />
-            </svg>
+          <div className="inline-flex items-center justify-center w-12 h-12 border-2 border-[#2a2421] bg-[#fdfaf2] text-[#2a2421] mb-4 text-xl shadow-[2px_2px_0px_0px_#f2785d]">
+            🤖
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Create an account
+          <h1 className="text-3xl font-bold uppercase tracking-wider text-[#2a2421] crt-glow">
+            CREATE PROFILE
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Join the auction community
+          <p className="text-xs text-[#2a2421]/60 mt-1 uppercase">
+            REGISTER NEW NODE ON NETWORK
           </p>
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-7">
+        <div className="retro-card p-7">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
               >
                 Full Name
               </label>
@@ -87,8 +75,8 @@ const Signup = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition"
-                placeholder="John Doe"
+                className="retro-input w-full px-4 py-2.5"
+                placeholder="JOHN DOE"
                 required
               />
             </div>
@@ -96,9 +84,9 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
               >
-                Email
+                Email Address
               </label>
               <input
                 id="email"
@@ -107,8 +95,8 @@ const Signup = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition"
-                placeholder="you@example.com"
+                className="retro-input w-full px-4 py-2.5"
+                placeholder="USER@HOST.COM"
                 required
               />
             </div>
@@ -116,9 +104,9 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
               >
-                Password
+                Password Key
               </label>
               <input
                 id="password"
@@ -127,40 +115,40 @@ const Signup = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
-                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition"
+                className="retro-input w-full px-4 py-2.5"
                 placeholder="••••••••"
                 required
                 minLength={8}
               />
-              <p className="mt-1.5 text-xs text-gray-400">
-                At least 8 characters
+              <p className="mt-1 text-[10px] text-[#2a2421]/50 uppercase">
+                MIN LENGTH: 8 CHARACTERS
               </p>
             </div>
 
             {isError && (
-              <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl">
-                {isError}
+              <div className="bg-[#f2785d]/10 border-2 border-[#2a2421] text-[#f2785d] text-xs px-4 py-2.5">
+                [ALERT] {isError}
               </div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 text-white py-2.5 rounded-xl font-semibold hover:bg-indigo-700 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm shadow-indigo-200"
+              className="retro-btn w-full"
             >
-              {loading ? "Creating account..." : "Create Account"}
+              {loading ? "INITIALIZING..." : "SIGN UP"}
             </button>
           </form>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-sm text-gray-500 mt-6">
-          Already have an account?{" "}
+        <p className="text-center text-xs text-[#2a2421]/75 mt-6 uppercase">
+          Already have a node?{" "}
           <Link
             to="/login"
-            className="text-indigo-600 font-medium hover:text-indigo-700"
+            className="text-[#7da89f] font-bold hover:underline"
           >
-            Sign in
+            AUTHENTICATE
           </Link>
         </p>
       </div>

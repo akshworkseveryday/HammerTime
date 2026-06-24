@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import { env } from "../config/env.config.js";
 
 const resend = new Resend(env.resend_api_key);
+const SITE_NAME = "HammerTime";
 
 // Escape HTML to prevent XSS in email templates
 const escapeHtml = (str) => {
@@ -29,25 +30,38 @@ export const handleSendMessage = async (req, res) => {
       return res.status(400).json({ error: "Invalid email address" });
     }
 
+    if (!env.contact_from_email || !env.contact_to_email) {
+      return res.status(500).json({
+        error: "Contact email is not configured on the server",
+      });
+    }
+
     // Sanitize inputs for HTML email templates
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
     const safeSubject = escapeHtml(subject);
     const safeMessage = escapeHtml(message);
+    const siteUrl = env.site_url || env.origin;
 
     await resend.batch.send([
       {
-        from: `Online Auction <noreply@ihavetech.com>`,
-        to: ["hi@ihavetech.com"],
+        from: `${SITE_NAME} <${env.contact_from_email}>`,
+        to: [env.contact_to_email],
         reply_to: email,
         subject: `${safeName} sent a message`,
         html: adminEmailTemplate(safeName, safeEmail, safeSubject, safeMessage),
       },
       {
-        from: `Avnish Kumar <hi@ihavetech.com>`,
+        from: `${SITE_NAME} <${env.contact_from_email}>`,
         to: email,
-        subject: `Reply from Avnish Kumar`,
-        html: userEmailTemplate(safeName, safeEmail, safeSubject, safeMessage),
+        subject: `Reply from ${SITE_NAME}`,
+        html: userEmailTemplate(
+          safeName,
+          safeEmail,
+          safeSubject,
+          safeMessage,
+          siteUrl,
+        ),
       },
     ]);
     res.status(200).json({ message: "Message sent succesfully" });
@@ -56,7 +70,7 @@ export const handleSendMessage = async (req, res) => {
   }
 };
 
-const userEmailTemplate = (name, email, subject, message) => `
+const userEmailTemplate = (name, email, subject, message, siteUrl) => `
   <!DOCTYPE html>
   <html lang="en" style="margin: 0; padding: 0;">
     <head>
@@ -109,14 +123,14 @@ const userEmailTemplate = (name, email, subject, message) => `
         <p><strong>Message:</strong></p>
         <p>${message}</p>
 
-        <a href="https://auction.ihavetech.com" class="btn">Visit Our Website</a>
+        <a href="${siteUrl}" class="btn">Visit ${SITE_NAME}</a>
 
         <p>
           If this wasn’t you or you need immediate help, feel free to reply directly to this email.
         </p>
 
         <div class="footer">
-          &copy; 2025 Online Auction (Avnish Kumar). All rights reserved. <br />
+          &copy; 2026 ${SITE_NAME}. All rights reserved. <br />
           This is an automated confirmation. Please do not reply.
         </div>
       </div>
@@ -151,7 +165,7 @@ const adminEmailTemplate = (name, email, subject, message) => `
     <body>
       <div class="container">
       <p>
-          New Contact Form Submission from Online Auction
+          New Contact Form Submission from ${SITE_NAME}
         </p>
 
         <p><strong>Email:</strong> ${email}</p>

@@ -1,22 +1,19 @@
 <div align="center">
 
-# Online Auction System
+# HammerTime
 
 ### A full-stack real-time auction platform built with the MERN stack
 
-[![Live Demo](https://img.shields.io/badge/Live-auction.ihavetech.com-indigo?style=for-the-badge&logo=googlechrome&logoColor=white)](https://auction.ihavetech.com)
-
-![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
-![License](https://img.shields.io/github/license/theavnishkumar/online-auction-system?style=flat-square)
-![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-blue?style=flat-square)
-![Issues](https://img.shields.io/github/issues/theavnishkumar/online-auction-system?style=flat-square)
-![Forks](https://img.shields.io/github/forks/theavnishkumar/online-auction-system?style=flat-square)
-![Stars](https://img.shields.io/github/stars/theavnishkumar/online-auction-system?style=flat-square)
-![Last Commit](https://img.shields.io/github/last-commit/theavnishkumar/online-auction-system?style=flat-square)
+[![Live Demo](https://img.shields.io/badge/Live-Deploy%20HammerTime-indigo?style=for-the-badge&logo=googlechrome&logoColor=white)](#deployment)
+![License](https://img.shields.io/github/license/akshworkseveryday/HammerTime?style=flat-square)
+![Issues](https://img.shields.io/github/issues/akshworkseveryday/HammerTime?style=flat-square)
+![Forks](https://img.shields.io/github/forks/akshworkseveryday/HammerTime?style=flat-square)
+![Stars](https://img.shields.io/github/stars/akshworkseveryday/HammerTime?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/akshworkseveryday/HammerTime?style=flat-square)
 
 **Create auctions · Bid in real-time · Manage everything from an admin panel**
 
-[Live Demo](https://auction.ihavetech.com) · [Report Bug](https://github.com/theavnishkumar/online-auction-system/issues) · [Request Feature](https://github.com/theavnishkumar/online-auction-system/issues) · [Architecture](./ARCHITECTURE.md) · [Learning Guide](./LEARNING_GUIDE.md) · [Backend Docs](./server/README.md) · [Frontend Docs](./client/README.md)
+[Report Bug](https://github.com/akshworkseveryday/HammerTime/issues) · [Request Feature](https://github.com/akshworkseveryday/HammerTime/issues) · [Architecture](./ARCHITECTURE.md)
 
 </div>
 
@@ -68,9 +65,9 @@ Most auction system tutorials stop at basic CRUD. This project goes much further
 - **Smart UX** — Hover prefetching, View Transitions API, live countdown timers, auto-winner detection
 - **Deployment-ready** — CI/CD pipeline, Vercel serverless support, AWS EC2 with PM2, graceful shutdown
 
-> Built as a **Major Project for Computer Science Engineering** by [Avnish Kumar](https://github.com/theavnishkumar), designed to be a real-world reference for full-stack MERN development.
+> HammerTime is a production-style reference for full-stack MERN development with real-time bidding, secure auth, and deployment-ready infrastructure.
 >
-> 📖 **New here?** Read the [Architecture Guide](./ARCHITECTURE.md) to understand how the system works, and the [Learning Guide](./LEARNING_GUIDE.md) to see what's implemented, why, and what you can build next.
+> 📖 **New here?** Read the [Architecture Guide](./ARCHITECTURE.md) to understand how the system works.
 
 ---
 
@@ -138,8 +135,8 @@ Cloudinary CDN
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/theavnishkumar/online-auction-system.git
-cd online-auction-system
+git clone https://github.com/akshworkseveryday/HammerTime.git
+cd HammerTime
 
 # Install backend
 cd server && npm install
@@ -163,6 +160,9 @@ CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
 CLOUDINARY_URL=cloudinary://...
 RESEND_API_KEY=re_xxxxxxxxxxxx
+SITE_URL=http://localhost:5173
+CONTACT_FROM_EMAIL=noreply@your-domain.com
+CONTACT_TO_EMAIL=contact@your-domain.com
 ```
 
 **Client** (`client/.env`):
@@ -189,8 +189,8 @@ Open **http://localhost:5173** — you're live!
 ## Project Structure
 
 ```
-online-auction-system/
-├── client/                      # React frontend (see client/README.md)
+HammerTime/
+├── client/                      # React frontend
 │   ├── src/
 │   │   ├── components/          # Reusable UI (Navbar, AuctionCard, Footer)
 │   │   ├── pages/               # Route pages (Dashboard, ViewAuction, etc.)
@@ -201,7 +201,7 @@ online-auction-system/
 │   │   └── routers/             # Route definitions
 │   └── package.json
 │
-├── server/                      # Express backend (see server/README.md)
+├── server/                      # Express backend
 │   ├── controllers/             # Route handlers
 │   ├── models/                  # Mongoose schemas (User, Product, Login)
 │   ├── routes/                  # REST API routes
@@ -371,7 +371,7 @@ The included GitHub Actions workflow (`.github/workflows/deploy.yml`) auto-deplo
 | `EC2_USERNAME`          | SSH user (e.g., `ubuntu`)    |
 | `EC2_SSH_KEY`           | Private SSH key              |
 | `EC2_SSH_PORT`          | SSH port (default: 22)       |
-| `EC2_PROJECT_PATH`      | Project directory on EC2     |
+| `EC2_PROJECT_PATH`      | Project directory on EC2 (e.g., `/home/ubuntu/HammerTime`) |
 | `PORT`                  | Server port                  |
 | `ORIGIN`                | Frontend URL for CORS        |
 | `MONGO_URL`             | MongoDB connection string    |
@@ -383,6 +383,9 @@ The included GitHub Actions workflow (`.github/workflows/deploy.yml`) auto-deplo
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret        |
 | `CLOUDINARY_URL`        | Cloudinary URL               |
 | `RESEND_API_KEY`        | Resend email API key         |
+| `SITE_URL`              | Public frontend URL          |
+| `CONTACT_FROM_EMAIL`    | Contact form sender address  |
+| `CONTACT_TO_EMAIL`      | Contact form recipient       |
 
 </details>
 
@@ -420,10 +423,10 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE) for more informati
 
 <div align="center">
 
-**Built by [Avnish Kumar](https://github.com/theavnishkumar)**
+**Built by [akshworkseveryday](https://github.com/akshworkseveryday)**
 
 If this project helped you, consider giving it a ⭐
 
-[⬆ Back to Top](#online-auction-system)
+[⬆ Back to Top](#hammertime)
 
 </div>

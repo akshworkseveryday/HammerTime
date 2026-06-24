@@ -134,7 +134,7 @@ export const CreateAuction = () => {
 
     setError("");
 
-    // Instant local preview via ref-backed object URL
+    // Instant local preview
     if (previewUrlRef.current) {
       URL.revokeObjectURL(previewUrlRef.current);
     }
@@ -143,7 +143,6 @@ export const CreateAuction = () => {
     setPreviewUrl(localPreview);
     setSelectedFileName(file.name);
 
-    // Reset previous upload metadata and begin upload UI
     uploadedMetaRef.current = { formId: "", public_id: "", secure_url: "" };
     setUploadProgress(0);
     setIsUploading(true);
@@ -169,7 +168,6 @@ export const CreateAuction = () => {
         throw new Error("Cloud upload failed");
       }
 
-      // Keep cloud metadata in ref (no extra save endpoint call)
       uploadedMetaRef.current = {
         formId: signatureData.formId,
         public_id,
@@ -210,8 +208,10 @@ export const CreateAuction = () => {
       return;
     }
 
+    // Divide input Rupee price by 100 before transmitting to database
     mutate({
       ...formData,
+      startingPrice: Number(formData.startingPrice) / 100,
       formId: uploadMeta.formId,
       public_id: uploadMeta.public_id,
       secure_url: uploadMeta.secure_url,
@@ -231,47 +231,35 @@ export const CreateAuction = () => {
     maxEndDate = end.toISOString().split("T")[0];
   }
 
-  const inputClasses =
-    "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition";
-
   const submitDisabled = isPending || isUploading;
 
   return (
-    <div className="min-h-screen bg-gray-50/80">
+    <div className="min-h-screen bg-[#fdfaf2] text-[#2a2421] font-mono">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <button
           onClick={() => navigate(-1)}
           type="button"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-indigo-600 transition mb-6 group"
+          className="inline-flex items-center gap-2 border-2 border-[#2a2421] px-4 py-1.5 hover:bg-[#2a2421]/10 transition mb-6 uppercase font-bold text-xs bg-white"
         >
-          <svg
-            className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          Back
+          &larr; BACK
         </button>
 
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Create Auction</h1>
-          <p className="text-sm text-gray-400 mt-1">List an item for bidding</p>
+          <h1 className="text-3xl font-bold uppercase tracking-wider text-[#2a2421] crt-glow">
+            CREATE AUCTION SEQUENCE
+          </h1>
+          <p className="text-xs text-[#2a2421]/60 mt-1 uppercase">
+            Initialize new asset listing on the network
+          </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm">
+        <div className="bg-[#fdfaf2] border-2 border-[#2a2421] shadow-[4px_4px_0px_0px_#f2785d]">
           <div className="p-6 sm:p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label
                   htmlFor="itemName"
-                  className="block text-sm font-medium text-gray-700 mb-1.5"
+                  className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                 >
                   Item Name
                 </label>
@@ -281,8 +269,8 @@ export const CreateAuction = () => {
                   name="itemName"
                   value={formData.itemName}
                   onChange={handleInputChange}
-                  className={inputClasses}
-                  placeholder="e.g. Vintage mechanical watch"
+                  className="retro-input w-full px-4 py-3"
+                  placeholder="e.g. VINTAGE MECHANICAL CLOCK"
                   required
                 />
               </div>
@@ -290,7 +278,7 @@ export const CreateAuction = () => {
               <div>
                 <label
                   htmlFor="itemDescription"
-                  className="block text-sm font-medium text-gray-700 mb-1.5"
+                  className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                 >
                   Description
                 </label>
@@ -300,8 +288,8 @@ export const CreateAuction = () => {
                   value={formData.itemDescription}
                   onChange={handleInputChange}
                   rows={4}
-                  className={`${inputClasses} resize-vertical`}
-                  placeholder="Describe condition, features, and any relevant details"
+                  className="retro-input w-full px-4 py-3 resize-vertical"
+                  placeholder="INPUT SPECIFICATIONS, CONDITION MATRIX, AND RELEVANT HISTORY..."
                   required
                 />
               </div>
@@ -310,7 +298,7 @@ export const CreateAuction = () => {
                 <div>
                   <label
                     htmlFor="itemCategory"
-                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                    className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                   >
                     Category
                   </label>
@@ -319,13 +307,13 @@ export const CreateAuction = () => {
                     name="itemCategory"
                     value={formData.itemCategory}
                     onChange={handleInputChange}
-                    className={inputClasses}
+                    className="retro-input w-full px-4 py-3"
                     required
                   >
-                    <option value="">Select category</option>
+                    <option value="">SELECT CATEGORY</option>
                     {categories.map((category) => (
                       <option key={category} value={category}>
-                        {category}
+                        {category.toUpperCase()}
                       </option>
                     ))}
                   </select>
@@ -334,13 +322,13 @@ export const CreateAuction = () => {
                 <div>
                   <label
                     htmlFor="startingPrice"
-                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                    className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                   >
-                    Starting Price (Rs)
+                    Starting Price (₹)
                   </label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-                      Rs
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#2a2421] font-bold">
+                      ₹
                     </span>
                     <input
                       type="number"
@@ -350,8 +338,8 @@ export const CreateAuction = () => {
                       onChange={handleInputChange}
                       min="1"
                       step="1"
-                      className={`${inputClasses} pl-10`}
-                      placeholder="100"
+                      className="retro-input w-full pl-10 pr-4 py-3"
+                      placeholder="1000"
                       required
                     />
                   </div>
@@ -362,7 +350,7 @@ export const CreateAuction = () => {
                 <div>
                   <label
                     htmlFor="itemStartDate"
-                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                    className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                   >
                     Start Date
                   </label>
@@ -374,7 +362,7 @@ export const CreateAuction = () => {
                     value={formData.itemStartDate}
                     max={maxStartDate}
                     onChange={handleInputChange}
-                    className={inputClasses}
+                    className="retro-input w-full px-4 py-3 uppercase"
                     required
                   />
                 </div>
@@ -382,7 +370,7 @@ export const CreateAuction = () => {
                 <div>
                   <label
                     htmlFor="itemEndDate"
-                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                    className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                   >
                     End Date
                   </label>
@@ -394,24 +382,24 @@ export const CreateAuction = () => {
                     onChange={handleInputChange}
                     min={formData.itemStartDate}
                     max={maxEndDate}
-                    className={inputClasses}
+                    className="retro-input w-full px-4 py-3 uppercase"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Photo
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5">
+                  Asset Visual Frame (Image)
                 </label>
 
                 {!previewUrl ? (
                   <label
                     htmlFor="itemPhoto"
-                    className="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer bg-gray-50 hover:bg-gray-100/60 hover:border-gray-300 transition-colors"
+                    className="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-[#2a2421]/20 bg-white cursor-pointer hover:bg-gray-50 hover:border-[#2a2421]/60 transition-colors"
                   >
                     <svg
-                      className="w-8 h-8 text-gray-300 mb-2"
+                      className="w-8 h-8 text-[#2a2421]/40 mb-2"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -423,10 +411,12 @@ export const CreateAuction = () => {
                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                       />
                     </svg>
-                    <p className="text-sm text-gray-400">
-                      Click to upload image
+                    <p className="text-xs text-[#2a2421]/65 uppercase font-bold">
+                      CLICK TO UPLOAD IMAGE
                     </p>
-                    <p className="text-xs text-gray-300 mt-1">Max 5 MB</p>
+                    <p className="text-[10px] text-[#2a2421]/40 mt-1">
+                      MAX FILE LIMIT: 5 MB
+                    </p>
                     <input
                       type="file"
                       id="itemPhoto"
@@ -439,20 +429,20 @@ export const CreateAuction = () => {
                     />
                   </label>
                 ) : (
-                  <div className="relative inline-block">
+                  <div className="relative inline-block border-2 border-[#2a2421] p-1 bg-white">
                     <img
                       src={previewUrl}
                       alt="Preview"
-                      className="w-44 h-44 object-cover rounded-2xl border border-gray-200"
+                      className="w-44 h-44 object-cover"
                     />
 
                     <button
                       type="button"
                       onClick={clearUploadedImage}
-                      className="absolute -top-2 -right-2 bg-white border border-gray-200 rounded-full p-1 shadow-sm hover:bg-red-50 hover:border-red-200 transition"
+                      className="absolute -top-2.5 -right-2.5 bg-white border-2 border-[#f2785d] text-[#f2785d] hover:bg-[#f2785d] hover:text-white p-0.5 shadow-sm transition"
                     >
                       <svg
-                        className="w-4 h-4 text-gray-500 hover:text-red-500"
+                        className="w-4 h-4"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -460,35 +450,35 @@ export const CreateAuction = () => {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeWidth={2.5}
                           d="M6 18L18 6M6 6l12 12"
                         />
                       </svg>
                     </button>
 
                     <div className="mt-3 w-44">
-                      <div className="flex items-center justify-between text-[11px] text-gray-500 mb-1">
+                      <div className="flex items-center justify-between text-[10px] text-[#2a2421]/75 mb-1 font-bold">
                         <span className="truncate pr-2">
                           {selectedFileName}
                         </span>
                         <span className="tabular-nums">{uploadProgress}%</span>
                       </div>
-                      <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-2 w-full bg-white border border-[#2a2421]/20 overflow-hidden">
                         <div
                           className={`h-full transition-all duration-200 ${
                             uploadProgress === 100
-                              ? "bg-emerald-500"
-                              : "bg-indigo-500"
+                              ? "bg-[#f2785d]"
+                              : "bg-[#7da89f]"
                           }`}
                           style={{ width: `${uploadProgress}%` }}
                         />
                       </div>
-                      <p className="text-[11px] text-gray-400 mt-1">
+                      <p className="text-[9px] text-[#2a2421]/50 mt-1 uppercase font-bold">
                         {isUploading
-                          ? "Uploading to Cloudinary..."
+                          ? "TRANSMITTING..."
                           : uploadProgress === 100
-                            ? "Upload complete"
-                            : "Ready"}
+                            ? "TRANSFER SUCCESS"
+                            : "STANDBY"}
                       </p>
                     </div>
                   </div>
@@ -496,26 +486,22 @@ export const CreateAuction = () => {
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm">
-                  {error}
+                <div className="bg-[#f2785d]/10 border-2 border-[#f2785d] text-[#f2785d] px-4 py-3 text-xs uppercase font-bold">
+                  [ERROR] {error}
                 </div>
               )}
 
-              <div className="pt-4 border-t border-gray-100">
+              <div className="pt-4 border-t border-[#2a2421]/20">
                 <button
                   type="submit"
                   disabled={submitDisabled}
-                  className={`w-full sm:w-auto px-8 py-3 rounded-xl font-semibold text-sm transition-all ${
-                    submitDisabled
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-indigo-600 text-white hover:bg-indigo-700 active:scale-[0.97] shadow-sm shadow-indigo-200"
-                  }`}
+                  className="retro-btn"
                 >
                   {isUploading
-                    ? "Uploading..."
+                    ? "UPLOADING..."
                     : isPending
-                      ? "Creating..."
-                      : "Create Auction"}
+                      ? "TRANSMITTING..."
+                      : "EXECUTE LISTING"}
                 </button>
               </div>
             </form>
@@ -530,23 +516,22 @@ export const CreateAuction = () => {
 
 export const HelpSection = () => {
   const tips = [
-    "Use clear, high-quality photos showing your item from multiple angles",
-    "Write detailed descriptions including condition, dimensions, and flaws",
-    "Set a reasonable starting price to attract bidders",
-    "3-7 day auction duration typically works best",
-    "Select the most accurate category to help buyers find your item",
+    "USE HIGH-RESOLUTION SCANNER OR PHOTOGRAPHY MODULES",
+    "SPECIFY FAULTS, SCRATCHES, OR PHYSICAL CHASSIS DEGRADATIONS IN THE LOG",
+    "SET ACCURATE CATEGORY IDENTIFIERS TO EXPEDITE DISCOVERY TIMES",
+    "3-7 DAY TIME WINDOWS TYPICALLY YIELD OPTIMAL BID RETENTION RATES",
   ];
 
   return (
-    <div className="mt-6 bg-amber-50/60 border border-amber-100 rounded-2xl p-5">
-      <h3 className="text-sm font-semibold text-amber-800 mb-3">
-        Tips for a successful listing
+    <div className="mt-6 bg-[#fdfaf2] border-2 border-[#e5b25d] shadow-[4px_4px_0px_0px_#e5b25d] p-5">
+      <h3 className="text-sm font-bold uppercase text-[#e5b25d] mb-3 tracking-wider">
+        // ADVISORY BULLETIN LISTING GUIDELINES
       </h3>
-      <ul className="space-y-2">
+      <ul className="space-y-2 text-xs text-[#e5b25d] font-bold">
         {tips.map((tip, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm text-amber-700">
-            <span className="text-amber-400 mt-0.5">&#10148;</span>
-            {tip}
+          <li key={i} className="flex items-start gap-2">
+            <span>&#187;</span>
+            <span>{tip}</span>
           </li>
         ))}
       </ul>

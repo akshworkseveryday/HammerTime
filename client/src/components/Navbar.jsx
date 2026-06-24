@@ -15,7 +15,6 @@ import {
 } from "react-icons/md";
 import {
   IoCloseSharp,
-  IoDocumentTextOutline,
   IoLogOutOutline,
 } from "react-icons/io5";
 import { RiAuctionLine } from "react-icons/ri";
@@ -72,86 +71,84 @@ export const Navbar = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-gray-200/60">
-        <div className="bg-white/70 backdrop-blur-xl">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="flex justify-between items-center h-16">
-              {/* Logo */}
-              <Link to="/" className="flex items-center gap-2.5 group">
-                <div className="bg-indigo-600 text-white p-1.5 rounded-lg group-hover:bg-indigo-700 transition">
-                  <RiAuctionLine className="h-5 w-5" />
-                </div>
-                <span className="text-lg font-bold text-gray-900 tracking-tight">
-                  Online Auction
-                </span>
-              </Link>
+      {/* Global CRT overlay inside layout */}
+      <div className="crt-overlay" />
 
-              {/* Desktop Navigation — main links only */}
-              <nav className="hidden md:flex items-center gap-1">
-                {navItems.map((item) => (
+      <header className="sticky top-0 z-40 border-b-4 border-[#f2785d] bg-[#fdfaf2] text-[#2a2421]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2 group">
+              <span className="text-xl font-bold tracking-wider crt-glow text-[#f2785d] font-mono">
+                👾 HAMMERTIME
+              </span>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-2 font-mono">
+              {navItems.map((item) => (
+                <NavLink
+                  to={item.link}
+                  key={item.link}
+                  end={item.link === "/"}
+                  onMouseEnter={() => handlePrefetch(item.link)}
+                  className={({ isActive }) =>
+                    `px-3 py-1 text-sm font-semibold uppercase transition-all border-2 ${
+                      isActive
+                        ? "bg-[#f2785d] text-[#fdfaf2] border-[#2a2421] shadow-[2px_2px_0px_0px_#7da89f]"
+                        : "text-[#2a2421] border-transparent hover:border-[#f2785d] hover:shadow-[2px_2px_0px_0px_rgba(242,120,93,0.3)]"
+                    }`
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              ))}
+            </nav>
+
+            {/* Right Section */}
+            <div className="flex items-center gap-3 font-mono">
+              {/* Desktop auth buttons */}
+              {!user && (
+                <div className="hidden md:flex items-center gap-3">
+                  <LoginSignup />
+                </div>
+              )}
+              {user && (
+                <div className="hidden md:flex items-center gap-2">
                   <NavLink
-                    to={item.link}
-                    key={item.link}
-                    end={item.link === "/"}
-                    onMouseEnter={() => handlePrefetch(item.link)}
+                    to="/profile"
                     className={({ isActive }) =>
-                      `px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
+                      `flex items-center gap-2 px-3 py-1.5 border-2 transition-all ${
                         isActive
-                          ? "text-indigo-600 bg-indigo-50"
-                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                          ? "bg-[#7da89f] text-[#fdfaf2] border-[#2a2421] shadow-[2px_2px_0px_0px_#f2785d]"
+                          : "border-transparent text-[#7da89f] hover:border-[#7da89f] hover:bg-[#7da89f]/10"
                       }`
                     }
                   >
-                    {item.name}
+                    <div className="w-5 h-5 bg-[#7da89f] text-[#fdfaf2] flex items-center justify-center text-xs font-bold font-mono">
+                      {user.user.name?.charAt(0)?.toUpperCase()}
+                    </div>
+                    <span>{user.user.name?.split(" ")[0]}</span>
                   </NavLink>
-                ))}
-              </nav>
+                  <button
+                    onClick={handleLogout}
+                    className="p-1.5 border-2 border-transparent text-[#f2785d] hover:border-[#f2785d] hover:bg-[#f2785d]/10 cursor-pointer"
+                    title="Sign out"
+                  >
+                    <IoLogOutOutline className="h-5 w-5" />
+                  </button>
+                </div>
+              )}
 
-              {/* Right Section */}
-              <div className="flex items-center gap-2">
-                {/* Desktop auth buttons */}
-                {!user && (
-                  <div className="hidden md:flex items-center gap-3">
-                    <LoginSignup />
-                  </div>
-                )}
-                {user && (
-                  <div className="hidden md:flex items-center gap-2">
-                    <NavLink
-                      to="/profile"
-                      className={({ isActive }) =>
-                        `flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                          isActive
-                            ? "text-indigo-600 bg-indigo-50"
-                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                        }`
-                      }
-                    >
-                      <div className="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-600">
-                        {user.user.name?.charAt(0)?.toUpperCase()}
-                      </div>
-                      {user.user.name?.split(" ")[0]}
-                    </NavLink>
-                    <button
-                      onClick={handleLogout}
-                      className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition cursor-pointer"
-                      title="Sign out"
-                    >
-                      <IoLogOutOutline className="h-5 w-5" />
-                    </button>
-                  </div>
-                )}
-
-                {/* Hamburger — always visible */}
-                <button
-                  onClick={toggleMenu}
-                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
-                  aria-expanded={isMenuOpen}
-                  aria-label="Toggle menu"
-                >
-                  <HiOutlineMenuAlt3 className="h-5 w-5" />
-                </button>
-              </div>
+              {/* Hamburger */}
+              <button
+                onClick={toggleMenu}
+                className="p-1.5 border-2 border-[#2a2421] bg-transparent text-[#2a2421] hover:bg-[#2a2421]/10"
+                aria-expanded={isMenuOpen}
+                aria-label="Toggle menu"
+              >
+                <HiOutlineMenuAlt3 className="h-5 w-5" />
+              </button>
             </div>
           </div>
         </div>
@@ -159,7 +156,7 @@ export const Navbar = () => {
 
       {/* Overlay */}
       <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black/60 z-50 transition-opacity duration-300 ${
           isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsMenuOpen(false)}
@@ -167,38 +164,35 @@ export const Navbar = () => {
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white z-50 transform transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 h-full w-80 bg-[#fdfaf2] border-l-4 border-[#2a2421] text-[#2a2421] z-50 transform transition-transform duration-300 ease-out font-mono ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Drawer Header */}
-        <div className="flex justify-between items-center px-5 h-16 border-b border-gray-100">
+        <div className="flex justify-between items-center px-5 h-16 border-b-2 border-[#2a2421]">
           <Link
             to="/"
-            className="flex items-center gap-2.5"
+            className="flex items-center gap-2"
             onClick={() => setIsMenuOpen(false)}
           >
-            <div className="bg-indigo-600 text-white p-1.5 rounded-lg">
-              <RiAuctionLine className="h-5 w-5" />
-            </div>
-            <span className="text-lg font-bold text-gray-900 tracking-tight">
-              Online Auction
+            <span className="text-lg font-bold tracking-wider text-[#f2785d] crt-glow">
+              MENU
             </span>
           </Link>
           <button
             onClick={() => setIsMenuOpen(false)}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition"
+            className="p-1.5 border-2 border-[#f2785d] text-[#f2785d] hover:bg-[#f2785d]/10"
             aria-label="Close menu"
           >
             <IoCloseSharp className="h-5 w-5" />
           </button>
         </div>
 
-        {/* User Profile (logged in) */}
+        {/* User Profile */}
         {user && (
-          <div className="px-5 py-4 border-b border-gray-100">
+          <div className="px-5 py-4 border-b-2 border-[#2a2421]/20 bg-[#fdfaf2]">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden">
+              <div className="h-10 w-10 border-2 border-[#7da89f] flex items-center justify-center overflow-hidden bg-white">
                 {user.user.avatar ? (
                   <img
                     src={user.user.avatar}
@@ -206,16 +200,16 @@ export const Navbar = () => {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <span className="text-sm font-bold text-indigo-600">
+                  <span className="text-sm font-bold text-[#7da89f]">
                     {user.user.name?.charAt(0)?.toUpperCase()}
                   </span>
                 )}
               </div>
               <div className="min-w-0">
-                <p className="font-semibold text-gray-900 text-sm truncate">
+                <p className="font-bold text-[#2a2421] text-sm truncate">
                   {user.user.name}
                 </p>
-                <p className="text-xs text-gray-400 truncate">
+                <p className="text-xs text-[#2a2421]/75 truncate">
                   {user.user.email}
                 </p>
               </div>
@@ -223,12 +217,12 @@ export const Navbar = () => {
           </div>
         )}
 
-        {/* Drawer Links — ALL pages */}
+        {/* Drawer Links */}
         <nav
           className="px-3 py-3 overflow-y-auto"
           style={{ maxHeight: "calc(100vh - 180px)" }}
         >
-          <div className="space-y-0.5">
+          <div className="space-y-1">
             {drawerItems.map((item) => (
               <NavLink
                 to={item.link}
@@ -236,24 +230,24 @@ export const Navbar = () => {
                 end={item.link === "/"}
                 onMouseEnter={() => handlePrefetch(item.link)}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  `flex items-center gap-3 px-3 py-2.5 border-2 transition-all uppercase text-xs font-bold ${
                     isActive
-                      ? "text-indigo-600 bg-indigo-50"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      ? "bg-[#f2785d] text-[#fdfaf2] border-[#2a2421] shadow-[2px_2px_0px_0px_#7da89f]"
+                      : "border-transparent hover:border-[#f2785d]/50 hover:bg-[#f2785d]/5"
                   }`
                 }
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.icon}
-                {item.name}
+                <span>{item.name}</span>
               </NavLink>
             ))}
           </div>
 
           {user ? (
-            <div className="mt-4 pt-4 border-t border-gray-100">
+            <div className="mt-4 pt-4 border-t-2 border-[#2a2421]/20">
               <button
-                className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 transition cursor-pointer"
+                className="flex items-center gap-3 w-full px-3 py-2.5 border-2 border-transparent text-[#f2785d] hover:border-[#f2785d] hover:bg-[#f2785d]/5 transition cursor-pointer font-bold uppercase text-xs"
                 onClick={() => {
                   setIsMenuOpen(false);
                   handleLogout();
@@ -264,17 +258,17 @@ export const Navbar = () => {
               </button>
             </div>
           ) : (
-            <div className="mt-4 pt-4 border-t border-gray-100 space-y-2 px-1">
+            <div className="mt-4 pt-4 border-t-2 border-[#2a2421]/20 space-y-3 px-1">
               <Link
                 to="/login"
-                className="block w-full py-2.5 px-4 text-center text-gray-700 border border-gray-200 rounded-xl text-sm font-medium hover:bg-gray-50 transition"
+                className="block w-full py-2 px-4 text-center text-[#2a2421] border-2 border-[#2a2421] hover:bg-[#f2785d]/10 transition uppercase text-xs font-bold"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Log in
               </Link>
               <Link
                 to="/signup"
-                className="block w-full py-2.5 px-4 text-center bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition"
+                className="block w-full py-2 px-4 text-center bg-[#f2785d] text-[#fdfaf2] border-2 border-[#2a2421] hover:bg-[#f2785d]/90 transition uppercase text-xs font-bold shadow-[2px_2px_0px_0px_#7da89f]"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Sign up
@@ -292,13 +286,13 @@ export const LoginSignup = () => {
     <>
       <Link
         to="/login"
-        className="px-4 py-2 text-gray-700 text-sm font-medium border border-gray-200 rounded-xl hover:bg-gray-50 transition"
+        className="px-3 py-1 border-2 border-[#2a2421] hover:bg-[#f2785d]/10 transition text-sm font-semibold uppercase"
       >
         Log in
       </Link>
       <Link
         to="/signup"
-        className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition"
+        className="px-3 py-1 bg-[#f2785d] text-[#fdfaf2] border-2 border-[#2a2421] hover:bg-[#f2785d]/90 transition text-sm font-semibold uppercase shadow-[2px_2px_0px_0px_#7da89f]"
       >
         Sign up
       </Link>
@@ -321,11 +315,6 @@ const navMenu = [
     name: "Contact",
     link: "/contact",
     icon: <MdMailOutline className="h-5 w-5" />,
-  },
-  {
-    name: "Legal",
-    link: "/legal",
-    icon: <IoDocumentTextOutline className="h-5 w-5" />,
   },
 ];
 
@@ -405,7 +394,6 @@ const adminNavLink = [
   },
 ];
 
-// Top nav bar links (limited set for desktop)
 const getNavLinks = (userRole) => {
   if (userRole === "admin") {
     return adminNavLink;
@@ -413,7 +401,6 @@ const getNavLinks = (userRole) => {
   return protectedNavLink.slice(0, 5);
 };
 
-// Links for the hamburger drawer
 const getAllLinks = (userRole) => {
   if (userRole === "admin") {
     return [

@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router";
 import AuctionCard from "../../components/AuctionCard";
 import LoadingScreen from "../../components/LoadingScreen";
-import { getAdminDashboard, getAllUsers } from "../../api/admin";
+import { getAdminDashboard } from "../../api/admin";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 const statConfig = [
   {
     key: "activeAuctions",
     label: "Active Auctions",
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
+    color: "text-[#7da89f]",
+    bg: "bg-[#7da89f]/10",
     icon: (
       <svg
-        className="w-5 h-5 text-emerald-500"
+        className="w-5 h-5 text-[#7da89f]"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -30,11 +30,11 @@ const statConfig = [
   {
     key: "totalAuctions",
     label: "Total Auctions",
-    color: "text-indigo-600",
-    bg: "bg-indigo-50",
+    color: "text-[#f2785d]",
+    bg: "bg-[#f2785d]/10",
     icon: (
       <svg
-        className="w-5 h-5 text-indigo-500"
+        className="w-5 h-5 text-[#f2785d]"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -51,11 +51,11 @@ const statConfig = [
   {
     key: "totalUsers",
     label: "Total Users",
-    color: "text-violet-600",
-    bg: "bg-violet-50",
+    color: "text-[#ffb09c]",
+    bg: "bg-[#ffb09c]/10",
     icon: (
       <svg
-        className="w-5 h-5 text-violet-500"
+        className="w-5 h-5 text-[#ffb09c]"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -72,11 +72,11 @@ const statConfig = [
   {
     key: "recentUsers",
     label: "Recent Signups",
-    color: "text-amber-600",
-    bg: "bg-amber-50",
+    color: "text-[#e5b25d]",
+    bg: "bg-[#e5b25d]/10",
     icon: (
       <svg
-        className="w-5 h-5 text-amber-500"
+        className="w-5 h-5 text-[#e5b25d]"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -132,10 +132,10 @@ export const AdminDashboard = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-[#fdfaf2] text-[#2a2421] font-mono">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-          <div className="bg-red-50 border border-red-100 text-red-600 rounded-xl p-4">
-            {error}
+          <div className="bg-[#f2785d]/10 border-2 border-[#2a2421] text-[#f2785d] p-4 font-bold">
+            [ALERT] {error}
           </div>
         </div>
       </div>
@@ -143,21 +143,21 @@ export const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#fdfaf2] text-[#2a2421] font-mono">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-[#2a2421] crt-glow uppercase">
               Admin Dashboard
             </h1>
-            <p className="text-sm text-gray-400 mt-1">
+            <p className="text-xs text-[#2a2421]/60 mt-1 uppercase">
               Manage auctions, users, and monitor activity
             </p>
           </div>
           <Link
             to="/admin/users"
-            className="hidden sm:inline-flex items-center gap-2 bg-indigo-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-700 active:scale-[0.97] transition-all shadow-sm shadow-indigo-200"
+            className="hidden sm:inline-flex items-center gap-2 retro-btn text-xs py-1.5 px-3"
           >
             <svg
               className="w-4 h-4"
@@ -182,13 +182,13 @@ export const AdminDashboard = () => {
             {statConfig.map((stat) => (
               <div
                 key={stat.key}
-                className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-5 flex items-center gap-4"
+                className="retro-card p-5 flex items-center gap-4"
               >
-                <div className={`${stat.bg} p-3 rounded-xl shrink-0`}>
+                <div className={`${stat.bg} p-3 shrink-0 border-2 border-[#2a2421]`}>
                   {stat.icon}
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <p className="text-[10px] font-bold text-[#2a2421]/60 uppercase tracking-wider">
                     {stat.label}
                   </p>
                   <p
@@ -206,12 +206,12 @@ export const AdminDashboard = () => {
         {dashboardData && (
           <section className="mb-12">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-xl font-bold text-[#2a2421] crt-glow uppercase">
                 Recent Active Auctions
               </h2>
               <Link
                 to="/auction"
-                className="text-sm font-medium text-indigo-500 hover:text-indigo-600 transition"
+                className="text-xs font-bold text-[#7da89f] hover:underline uppercase"
               >
                 View all &rarr;
               </Link>
@@ -219,8 +219,8 @@ export const AdminDashboard = () => {
 
             {!dashboardData.recentAuctions ||
             dashboardData.recentAuctions.length === 0 ? (
-              <div className="text-center py-16 bg-white rounded-2xl border border-gray-200/80 shadow-sm">
-                <p className="text-gray-400">
+              <div className="text-center py-16 bg-[#fdfaf2] border-2 border-dashed border-[#2a2421]/30">
+                <p className="text-xs text-[#2a2421]/60 uppercase">
                   No active auctions at the moment.
                 </p>
               </div>
@@ -237,62 +237,62 @@ export const AdminDashboard = () => {
         {/* Recent Users */}
         <section>
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-lg font-semibold text-gray-900">
+            <h2 className="text-xl font-bold text-[#2a2421] crt-glow uppercase">
               Recent Users
             </h2>
             <Link
               to="/admin/users"
-              className="text-sm font-medium text-indigo-500 hover:text-indigo-600 transition"
+              className="text-xs font-bold text-[#7da89f] hover:underline uppercase"
             >
               View all &rarr;
             </Link>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm overflow-hidden">
+          <div className="retro-card overflow-hidden">
             {!users || users.length === 0 ? (
               <div className="text-center py-16">
-                <p className="text-gray-400">No users found.</p>
+                <p className="text-xs text-[#2a2421]/60 uppercase">No users found.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="min-w-full">
                   <thead>
-                    <tr className="border-b border-gray-100">
-                      <th className="px-6 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                    <tr className="border-b-2 border-[#2a2421] bg-[#fdfaf2]">
+                      <th className="px-6 py-3.5 text-left text-[11px] font-bold text-[#2a2421] uppercase tracking-wider">
                         User
                       </th>
-                      <th className="px-6 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-3.5 text-left text-[11px] font-bold text-[#2a2421] uppercase tracking-wider">
                         Role
                       </th>
-                      <th className="px-6 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-3.5 text-left text-[11px] font-bold text-[#2a2421] uppercase tracking-wider">
                         Joined
                       </th>
-                      <th className="px-6 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-3.5 text-left text-[11px] font-bold text-[#2a2421] uppercase tracking-wider">
                         Last Login
                       </th>
-                      <th className="px-6 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-3.5 text-left text-[11px] font-bold text-[#2a2421] uppercase tracking-wider">
                         Status
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-50">
+                  <tbody className="divide-y-2 divide-[#2a2421]">
                     {(users || []).map((user) => (
                       <tr
                         key={user._id}
-                        className="hover:bg-gray-50/50 transition-colors"
+                        className="hover:bg-[#2a2421]/5 transition-colors"
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-3">
-                            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-400 to-violet-500 flex items-center justify-center shrink-0">
-                              <span className="text-xs font-semibold text-white">
+                            <div className="h-9 w-9 border-2 border-[#2a2421] bg-[#7da89f] flex items-center justify-center shrink-0">
+                              <span className="text-xs font-bold text-[#fdfaf2]">
                                 {user.name.charAt(0).toUpperCase()}
                               </span>
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-gray-900">
+                              <p className="text-sm font-bold text-[#2a2421]">
                                 {user.name}
                               </p>
-                              <p className="text-xs text-gray-400">
+                              <p className="text-xs text-[#2a2421]/60">
                                 {user.email}
                               </p>
                             </div>
@@ -300,26 +300,26 @@ export const AdminDashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
-                            className={`inline-flex text-[11px] font-semibold px-2.5 py-1 rounded-full ${
+                            className={`inline-flex text-[11px] font-bold px-2.5 py-1 border border-[#2a2421] ${
                               user.role === "admin"
-                                ? "bg-violet-50 text-violet-700"
-                                : "bg-emerald-50 text-emerald-700"
+                                ? "bg-[#f2785d]/10 text-[#f2785d]"
+                                : "bg-[#7da89f]/10 text-[#7da89f]"
                             }`}
                           >
                             {user.role}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#2a2421]/80">
                           {new Date(user.createdAt).toLocaleDateString()}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#2a2421]/80">
                           {user.lastLogin
                             ? new Date(user.lastLogin).toLocaleDateString()
                             : "Never"}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#7da89f] bg-[#7da89f]/10 border border-[#2a2421] px-2.5 py-1">
+                            <span className="w-1.5 h-1.5 bg-[#7da89f] rounded-full" />
                             Active
                           </span>
                         </td>

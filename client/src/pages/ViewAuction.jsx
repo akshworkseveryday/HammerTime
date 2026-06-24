@@ -31,7 +31,7 @@ export const ViewAuction = () => {
   const data = liveAuction || fetchedData;
   useDocumentTitle(data?.itemName ? data.itemName : "Auction Details");
 
-  // Live countdown timer — must be called before any early return to satisfy Rules of Hooks
+  // Live countdown timer
   useEffect(() => {
     if (!data?.itemEndDate) return;
     const updateCountdown = () => {
@@ -57,11 +57,16 @@ export const ViewAuction = () => {
 
     setBidding(true);
     try {
-      await placeBidMutation({ bidAmount: Number(bidAmount), id });
+      // Divide input Rupees by 100 to submit to the backend dollar base
+      await placeBidMutation({ bidAmount: Number(bidAmount) / 100, id });
       toast.success("Bid placed successfully!");
       if (inputRef.current) inputRef.current.value = "";
     } catch (err) {
-      const msg = err.response?.data?.message || "Failed to place bid";
+      let msg = err.response?.data?.message || "Failed to place bid";
+      // Format server error messages displaying "Rs X" to Rupees ₹(X * 100)
+      msg = msg.replace(/Rs\s*([0-9.]+)/gi, (match, p1) => {
+        return "₹" + (Number(p1) * 100).toLocaleString();
+      });
       toast.error(msg);
     } finally {
       setBidding(false);
@@ -75,15 +80,12 @@ export const ViewAuction = () => {
 
   const otherUsers = activeUsers.filter((u) => u.userId !== currentUserId);
 
-  const avatarColors = [
-    "bg-indigo-100 text-indigo-600",
-    "bg-rose-100 text-rose-600",
-    "bg-amber-100 text-amber-700",
-    "bg-teal-100 text-teal-600",
-    "bg-violet-100 text-violet-600",
-    "bg-sky-100 text-sky-600",
-  ];
   const getAvatarColor = (name) => {
+    const avatarColors = [
+      "border-[#7da89f] text-[#7da89f]",
+      "border-[#f2785d] text-[#f2785d]",
+      "border-[#e5b25d] text-[#e5b25d]",
+    ];
     const hash = (name || "")
       .split("")
       .reduce((a, c) => a + c.charCodeAt(0), 0);
@@ -92,45 +94,45 @@ export const ViewAuction = () => {
 
   const BidHistoryList = () =>
     data.bids.length === 0 ? (
-      <div className="py-10 text-center">
-        <p className="text-gray-400 text-sm">No bids yet</p>
-        <p className="text-gray-300 text-xs mt-1">
-          Be the first to place a bid!
+      <div className="py-10 text-center border-2 border-dashed border-[#2a2421]/20">
+        <p className="text-[#2a2421]/50 text-sm">NO BIDS YET</p>
+        <p className="text-[#2a2421]/40 text-xs mt-1">
+          INITIATE FIRST BID SEQUENCE
         </p>
       </div>
     ) : (
-      <div className="space-y-2">
+      <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
         {data.bids.map((bid, index) => (
           <div
             key={index}
-            className={`flex items-center justify-between p-3 rounded-xl transition ${
+            className={`flex items-center justify-between p-2.5 border-2 ${
               index === 0
-                ? "bg-indigo-50 border border-indigo-100"
-                : "hover:bg-gray-50"
-            }`}
+                ? "bg-[#f2785d]/5 border-[#f2785d]"
+                : "border-[#2a2421]/20 hover:border-[#2a2421]/50"
+            } transition`}
           >
             <div className="flex items-center gap-3">
               <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold ${getAvatarColor(bid.bidder?.name)}`}
+                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold ${getAvatarColor(bid.bidder?.name)} bg-white`}
               >
                 {bid.bidder?.name?.charAt(0)?.toUpperCase() || "?"}
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-800">
+                <p className="text-xs font-bold text-[#2a2421] uppercase">
                   {bid.bidder?.name}
                   {index === 0 && (
-                    <span className="ml-2 text-[10px] font-semibold uppercase text-indigo-500 bg-indigo-50 px-1.5 py-0.5 rounded">
-                      Leading
+                    <span className="ml-2 text-[8px] font-bold bg-[#f2785d] text-[#fdfaf2] px-1 py-0.2">
+                      LEADER
                     </span>
                   )}
                 </p>
-                <p className="text-xs text-gray-400">
-                  {new Date(bid.bidTime).toLocaleString()}
+                <p className="text-[10px] text-[#2a2421]/50">
+                  {new Date(bid.bidTime).toLocaleTimeString()}
                 </p>
               </div>
             </div>
-            <span className="text-sm font-semibold text-gray-700 tabular-nums">
-              Rs {bid.bidAmount}
+            <span className="text-xs font-black text-[#f2785d] tabular-nums">
+              ₹{(bid.bidAmount * 100).toLocaleString()}
             </span>
           </div>
         ))}
@@ -138,7 +140,7 @@ export const ViewAuction = () => {
     );
 
   return (
-    <div className="min-h-screen bg-gray-50/80">
+    <div className="min-h-screen bg-[#fdfaf2] text-[#2a2421] font-mono">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         {/* Back Button */}
         <button
@@ -149,64 +151,51 @@ export const ViewAuction = () => {
               navigate(-1);
             }
           }}
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-indigo-600 transition mb-6 group"
+          className="inline-flex items-center gap-2 border-2 border-[#2a2421] px-4 py-1.5 hover:bg-[#2a2421]/10 transition mb-8 uppercase font-bold text-xs bg-white"
         >
-          <svg
-            className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          Back
+          &larr; BACK TO LOBBY
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left — Image + Bid History */}
-          <div className="lg:col-span-7">
-            <div className="sticky top-6 space-y-6">
-              {/* Image */}
-              <div className="relative group">
-                <div className="aspect-[4/3] bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm">
+          <div className="lg:col-span-7 space-y-6">
+            <div className="sticky top-20 space-y-6">
+              {/* Image Container */}
+              <div className="relative border-4 border-[#2a2421] bg-white shadow-[4px_4px_0px_0px_#f2785d]">
+                <div className="aspect-[4/3] overflow-hidden flex items-center justify-center">
                   <img
                     src={data.itemImage?.url || "https://picsum.photos/601"}
                     alt={data.itemName}
-                    className="h-full w-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                    className="max-h-full max-w-full object-contain"
                   />
                 </div>
-                {/* Floating status badge */}
-                <div className="absolute top-4 left-4 flex items-center gap-2">
+                {/* Floating status badges */}
+                <div className="absolute top-3 left-3 flex flex-wrap gap-2">
                   <span
-                    className={`text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm ${
+                    className={`text-[10px] font-bold px-2 py-1 uppercase border-2 ${
                       isActive
-                        ? "bg-emerald-500/90 text-white"
-                        : "bg-gray-800/80 text-white"
+                        ? "bg-white text-[#f2785d] border-[#f2785d]"
+                        : "bg-white text-[#2a2421]/50 border-[#2a2421]/40"
                     }`}
                   >
-                    {isActive ? "Live Auction" : "Ended"}
+                    {isActive ? "LIVE AUCTION" : "ENDED"}
                   </span>
                   {isConnected && isActive && (
-                    <span className="flex items-center gap-1.5 text-xs font-medium text-white bg-gray-900/60 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+                    <span className="flex items-center gap-1.5 text-[10px] font-bold text-[#7da89f] bg-white border-2 border-[#7da89f] px-2 py-1">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full bg-[#7da89f] opacity-75" />
+                        <span className="relative inline-flex h-2 w-2 bg-[#7da89f]" />
                       </span>
-                      {activeUsers.length} watching
+                      {activeUsers.length} WATCHING
                     </span>
                   )}
                 </div>
               </div>
 
               {/* Bid History — Desktop */}
-              <div className="hidden lg:block bg-white rounded-2xl border border-gray-200/80 shadow-sm p-5">
-                <h3 className="text-sm font-semibold text-gray-700 mb-4">
-                  Bid History
+              <div className="hidden lg:block bg-[#fdfaf2] border-2 border-[#2a2421] p-5 shadow-[4px_4px_0px_0px_#f2785d]">
+                <h3 className="text-sm font-bold uppercase text-[#2a2421] mb-4 tracking-wider border-b border-[#2a2421]/20 pb-2">
+                  &gt; BID HISTORY STREAM
                 </h3>
                 <BidHistoryList />
               </div>
@@ -214,102 +203,74 @@ export const ViewAuction = () => {
           </div>
 
           {/* Right — Details */}
-          <div className="lg:col-span-5 space-y-5">
+          <div className="lg:col-span-5 space-y-6">
             {/* Title & Category */}
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-medium text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">
+            <div className="bg-[#fdfaf2] border-2 border-[#2a2421] p-5 shadow-[4px_4px_0px_0px_#f2785d]">
+              <div className="mb-2">
+                <span className="text-[10px] font-bold text-[#7da89f] border border-[#7da89f] bg-[#7da89f]/5 px-2 py-0.5 uppercase">
                   {data.itemCategory}
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-3xl font-bold text-[#2a2421] uppercase tracking-wide crt-glow">
                 {data.itemName}
               </h1>
-              <p className="mt-3 text-gray-500 text-[15px] leading-relaxed">
+              <p className="mt-4 text-[#2a2421]/80 text-xs leading-relaxed border-t border-[#2a2421]/20 pt-4">
                 {data.itemDescription}
               </p>
             </div>
 
             {/* Price Card */}
-            <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm overflow-hidden">
-              <div className="p-6">
+            <div className="bg-[#fdfaf2] border-2 border-[#2a2421] shadow-[4px_4px_0px_0px_#f2785d] overflow-hidden">
+              <div className="p-5">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-                      Current Bid
+                    <p className="text-[10px] font-bold text-[#2a2421]/65 uppercase tracking-wider">
+                      Current Price
                     </p>
-                    <p className="text-3xl sm:text-4xl font-bold text-gray-900 mt-1 tabular-nums">
-                      Rs {data.currentPrice}
+                    <p className="text-4xl font-black text-[#2a2421] mt-1.5 tabular-nums crt-glow">
+                      ₹{(data.currentPrice * 100).toLocaleString()}
                     </p>
-                    <p className="text-xs text-gray-400 mt-1">
-                      Started at Rs {data.startingPrice}
+                    <p className="text-[10px] text-[#2a2421]/50 mt-1 uppercase">
+                      Base rate: ₹{(data.startingPrice * 100).toLocaleString()}
                     </p>
                   </div>
                   <div className="text-right">
-                    <div className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-                      {data.bids.length} bid{data.bids.length !== 1 && "s"}
+                    <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#7da89f] border border-[#7da89f] px-2.5 py-1 bg-white">
+                      {data.bids.length} BIDS
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Time Left Bar */}
+              {/* Time Remaining Bar */}
               {isActive ? (
-                <div className="bg-red-50 border-t border-red-100 px-6 py-4">
+                <div className="bg-[#f2785d]/10 border-t-2 border-[#f2785d] text-[#f2785d] px-5 py-3">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <svg
-                        className="w-4 h-4 text-red-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span className="text-sm text-red-600 font-medium">
-                        Time remaining
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
+                    <span className="text-[11px] font-bold uppercase tracking-wider">
+                      TIME LEFT SEQUENCE
+                    </span>
+                    <div className="flex items-center gap-1">
                       {countdown.days > 0 && (
-                        <span className="bg-red-100 text-red-700 text-sm font-bold px-2 py-0.5 rounded-md tabular-nums">
-                          {countdown.days}d
+                        <span className="bg-white border border-[#f2785d] text-xs font-bold px-1.5 py-0.5 tabular-nums">
+                          {countdown.days}D
                         </span>
                       )}
-                      <span className="bg-red-100 text-red-700 text-sm font-bold px-2 py-0.5 rounded-md tabular-nums">
-                        {String(countdown.hours).padStart(2, "0")}h
+                      <span className="bg-white border border-[#f2785d] text-xs font-bold px-1.5 py-0.5 tabular-nums">
+                        {String(countdown.hours).padStart(2, "0")}H
                       </span>
-                      <span className="bg-red-100 text-red-700 text-sm font-bold px-2 py-0.5 rounded-md tabular-nums">
-                        {String(countdown.minutes).padStart(2, "0")}m
+                      <span className="bg-white border border-[#f2785d] text-xs font-bold px-1.5 py-0.5 tabular-nums">
+                        {String(countdown.minutes).padStart(2, "0")}M
                       </span>
-                      <span className="bg-red-100 text-red-700 text-sm font-bold px-2 py-0.5 rounded-md tabular-nums">
-                        {String(countdown.seconds).padStart(2, "0")}s
+                      <span className="bg-white border border-[#f2785d] text-xs font-bold px-1.5 py-0.5 tabular-nums">
+                        {String(countdown.seconds).padStart(2, "0")}S
                       </span>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="bg-gray-100 border-t border-gray-200 px-6 py-4 text-center">
-                  <p className="text-sm font-medium text-gray-500">
-                    Auction ended
+                <div className="bg-gray-100 border-t-2 border-gray-300 px-5 py-3 text-center">
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                    SYSTEM OFFLINE AUCTION ENDED
                   </p>
                 </div>
               )}
@@ -317,54 +278,36 @@ export const ViewAuction = () => {
 
             {/* Winner Section */}
             {!isActive && winnerData && (
-              <div className="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-2xl border border-amber-200 shadow-sm p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-amber-100 p-2 rounded-xl">
-                    <svg
-                      className="w-5 h-5 text-amber-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 3l3.057-3L12 3.943 15.943 0 19 3l-7 7-7-7z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M12 10v4m0 0l-3 6h6l-3-6z"
-                      />
-                    </svg>
+              <div className="bg-[#fdfaf2] border-2 border-[#e5b25d] shadow-[4px_4px_0px_0px_#e5b25d] p-5">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="border-2 border-[#e5b25d] text-[#e5b25d] p-1 bg-white">
+                    👑
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider">
-                      Winner
+                    <p className="text-[10px] font-bold text-[#e5b25d] uppercase tracking-wider">
+                      Winner declared
                     </p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-lg font-black text-[#2a2421] uppercase crt-glow">
                       {winnerData.name}
                     </p>
                   </div>
                 </div>
-                <p className="text-sm text-amber-700">
-                  Won with a bid of{" "}
-                  <span className="font-bold">Rs {data.currentPrice}</span>
+                <p className="text-xs text-[#e5b25d]">
+                  Winning bid registered at:{" "}
+                  <span className="font-bold text-[#2a2421]">₹{(data.currentPrice * 100).toLocaleString()}</span>
                 </p>
                 {winnerData._id === currentUserId && (
-                  <div className="mt-3 bg-amber-100 text-amber-800 text-sm font-medium px-4 py-2 rounded-xl">
-                    🎉 Congratulations! You won this auction!
+                  <div className="mt-3 bg-[#e5b25d] text-[#fdfaf2] text-xs font-bold px-3 py-2 text-center uppercase tracking-wide shadow-[2px_2px_0px_0px_#2a2421]">
+                    🏆 You are the winner of this auction!
                   </div>
                 )}
               </div>
             )}
 
             {!isActive && !winnerData && data.bids.length === 0 && (
-              <div className="bg-gray-100 rounded-2xl border border-gray-200 p-6 text-center">
-                <p className="text-sm text-gray-500">
-                  This auction ended with no bids.
+              <div className="bg-[#fdfaf2] border-2 border-gray-300 p-5 text-center shadow-[4px_4px_0px_0px_gray]">
+                <p className="text-xs text-gray-500">
+                  No bids were registered. Listing closed.
                 </p>
               </div>
             )}
@@ -373,46 +316,42 @@ export const ViewAuction = () => {
             {!isSeller && isActive && (
               <form
                 onSubmit={handleBidSubmit}
-                className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-6"
+                className="bg-[#fdfaf2] border-2 border-[#7da89f] shadow-[4px_4px_0px_0px_#7da89f] p-5"
               >
                 <div className="flex items-center justify-between mb-3">
                   <label
                     htmlFor="bidAmount"
-                    className="text-sm font-semibold text-gray-700"
+                    className="text-xs font-bold text-[#7da89f] uppercase tracking-wider"
                   >
                     Place your bid
                   </label>
-                  <span className="text-xs text-gray-400">
-                    Rs {data.currentPrice + 1} – {data.currentPrice + 10}
+                  <span className="text-[10px] text-[#7da89f] font-semibold">
+                    LIMITS: ₹{((data.currentPrice + 1) * 100).toLocaleString()} – ₹{((data.currentPrice + 10) * 100).toLocaleString()}
                   </span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <div className="relative flex-1">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-                      Rs
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#7da89f] text-sm font-bold">
+                      ₹
                     </span>
                     <input
                       type="number"
                       name="bidAmount"
                       id="bidAmount"
                       ref={inputRef}
-                      min={data.currentPrice + 1}
-                      max={data.currentPrice + 10}
-                      className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-semibold text-lg tabular-nums placeholder:text-gray-300 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition"
-                      placeholder={String(data.currentPrice + 1)}
+                      min={(data.currentPrice + 1) * 100}
+                      max={(data.currentPrice + 10) * 100}
+                      className="w-full pl-7 pr-3 py-2 bg-white border-2 border-[#2a2421] text-[#2a2421] font-bold text-lg focus:outline-none focus:border-[#f2785d] transition font-mono"
+                      placeholder={String((data.currentPrice + 1) * 100)}
                       required
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={bidding}
-                    className={`px-5 py-3 rounded-xl font-semibold text-sm transition-all ${
-                      bidding
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-indigo-600 text-white hover:bg-indigo-700 active:scale-[0.97] shadow-sm shadow-indigo-200"
-                    }`}
+                    className="retro-btn-cyan"
                   >
-                    {bidding ? "Bidding..." : "Bid Now"}
+                    {bidding ? "SENDING..." : "SUBMIT BID"}
                   </button>
                 </div>
               </form>
@@ -420,29 +359,25 @@ export const ViewAuction = () => {
 
             {/* Socket Error */}
             {socketError && (
-              <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl">
-                {socketError}
+              <div className="border-2 border-[#f2785d] bg-[#f2785d]/5 text-[#f2785d] text-xs px-4 py-2.5">
+                [ALERT] {socketError}
               </div>
             )}
 
             {/* Active Users */}
             {otherUsers.length > 0 && (
-              <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-5">
-                <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                  Also watching
+              <div className="bg-[#fdfaf2] border-2 border-[#7da89f]/30 p-4 shadow-[4px_4px_0px_0px_rgba(125,168,159,0.1)]">
+                <h3 className="text-[10px] font-bold uppercase tracking-wider text-[#7da89f] mb-3">
+                  // CONNECTED NODES
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {otherUsers.map((u) => (
                     <div
                       key={u.userId}
-                      className="flex items-center gap-2 bg-gray-50 pl-1.5 pr-3 py-1 rounded-full"
+                      className="flex items-center gap-1.5 border border-[#7da89f]/25 bg-white px-2 py-0.5 text-[10px]"
                     >
-                      <div
-                        className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${getAvatarColor(u.userName)}`}
-                      >
-                        {u.userName?.charAt(0)?.toUpperCase()}
-                      </div>
-                      <span className="text-xs font-medium text-gray-600">
+                      <span className="inline-block w-1.5 h-1.5 bg-[#7da89f]"></span>
+                      <span className="text-[#2a2421] uppercase font-bold">
                         {u.userName}
                       </span>
                     </div>
@@ -452,21 +387,21 @@ export const ViewAuction = () => {
             )}
 
             {/* Seller */}
-            <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-5">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                Seller
+            <div className="bg-[#fdfaf2] border-2 border-[#2a2421] p-5 shadow-[4px_4px_0px_0px_#f2785d]">
+              <h3 className="text-xs font-bold uppercase text-[#2a2421] mb-3 tracking-wider">
+                &gt; CREATOR PROFILE
               </h3>
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${getAvatarColor(data.seller.name)}`}
+                  className={`w-10 h-10 border-2 flex items-center justify-center text-sm font-bold ${getAvatarColor(data.seller.name)} bg-white`}
                 >
                   {data.seller.name?.charAt(0)?.toUpperCase()}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-800">
+                  <p className="text-sm font-bold text-[#2a2421] uppercase">
                     {data.seller.name}
                   </p>
-                  <p className="text-xs text-gray-400">Auction creator</p>
+                  <p className="text-[10px] text-[#2a2421]/50">VENDOR NODE</p>
                 </div>
               </div>
             </div>
@@ -474,9 +409,9 @@ export const ViewAuction = () => {
         </div>
 
         {/* Bid History — Mobile */}
-        <div className="mt-8 lg:hidden bg-white rounded-2xl border border-gray-200/80 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">
-            Bid History
+        <div className="mt-8 lg:hidden bg-[#fdfaf2] border-2 border-[#2a2421] p-5 shadow-[4px_4px_0px_0px_#f2785d]">
+          <h3 className="text-sm font-bold uppercase text-[#2a2421] mb-4 tracking-wider border-b border-[#2a2421]/20 pb-2">
+            &gt; BID HISTORY STREAM
           </h3>
           <BidHistoryList />
         </div>

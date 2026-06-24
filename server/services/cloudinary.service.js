@@ -12,7 +12,7 @@ export const generateUploadSignature = async () => {
 
   const params = {
     timestamp,
-    folder: "auction_system",
+    folder: "hammertime",
   };
 
   const signature = cloudinary.utils.api_sign_request(

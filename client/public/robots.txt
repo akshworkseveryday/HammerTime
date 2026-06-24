@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://auction.ihavetech.com/sitemap.xml
+# Update Sitemap URL when deploying to production
+# Sitemap: https://your-domain.com/sitemap.xml

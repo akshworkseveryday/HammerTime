@@ -6,31 +6,34 @@ export default function AuctionCard({ auction }) {
   const isActive = daysLeft > 0;
   const { prefetchAuction } = usePrefetchHandlers();
 
+  // Scale prices by 100 for display
+  const priceVal = (auction.currentPrice || auction.startingPrice || 0) * 100;
+
   return (
     <Link
       to={`/auction/${auction._id}`}
       viewTransition
       onMouseEnter={() => prefetchAuction(auction._id)}
-      className="group block w-full bg-white rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md hover:border-gray-300/80 transition-all duration-200"
+      className="group block w-full bg-[#fdfaf2] border-2 border-[#2a2421] text-[#2a2421] shadow-[4px_4px_0px_0px_#f2785d] hover:shadow-[6px_6px_0px_0px_#7da89f] hover:border-[#7da89f] hover:text-[#7da89f] transition-all duration-150 font-mono"
     >
-      {/* Image */}
-      <div className="relative aspect-[3/2] overflow-hidden rounded-t-2xl bg-gray-100">
+      {/* Image Container */}
+      <div className="relative aspect-[3/2] overflow-hidden bg-white border-b-2 border-[#2a2421]">
         <img
           src={auction.itemPhoto || "https://picsum.photos/300"}
           alt={auction.itemName}
-          className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
+          className="h-full w-full object-contain group-hover:scale-[1.02] transition-transform duration-200"
         />
-        <div className="absolute top-3 left-3 flex items-center gap-2">
-          <span className="text-[11px] font-medium text-indigo-700 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
+        <div className="absolute top-2 left-2 flex items-center gap-2">
+          <span className="text-[10px] font-bold uppercase bg-white text-[#7da89f] border border-[#7da89f] px-2 py-0.5">
             {auction.itemCategory}
           </span>
         </div>
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-2 right-2">
           <span
-            className={`text-[11px] font-medium px-2.5 py-1 rounded-full shadow-sm ${
+            className={`text-[10px] font-bold px-2 py-0.5 uppercase border ${
               isActive
-                ? "bg-emerald-500/90 text-white"
-                : "bg-gray-700/80 text-white"
+                ? "bg-white text-[#f2785d] border-[#f2785d]"
+                : "bg-white text-[#2a2421]/60 border-[#2a2421]/40"
             }`}
           >
             {isActive ? `${daysLeft}d left` : "Ended"}
@@ -39,49 +42,37 @@ export default function AuctionCard({ auction }) {
       </div>
 
       {/* Content */}
-      <div className="p-3.5">
-        <h3 className="font-semibold text-sm text-gray-900 mb-0.5 line-clamp-1 group-hover:text-indigo-600 transition-colors">
+      <div className="p-4">
+        <h3 className="font-bold text-base uppercase mb-1 line-clamp-1 group-hover:text-[#2a2421] transition-colors crt-glow">
           {auction.itemName}
         </h3>
-        <p className="text-gray-400 text-[11px] mb-3 line-clamp-1 leading-relaxed">
+        <p className="text-[#2a2421]/70 text-xs mb-4 line-clamp-2 leading-relaxed">
           {auction.itemDescription}
         </p>
 
-        <div className="flex items-end justify-between">
+        <div className="flex items-end justify-between border-t border-[#2a2421]/20 pt-3">
           <div>
-            <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider">
+            <p className="text-[9px] font-semibold uppercase tracking-wider text-[#2a2421]/65">
               Current Bid
             </p>
-            <p className="text-lg font-bold text-gray-900 tabular-nums">
-              Rs {auction.currentPrice || auction.startingPrice}
+            <p className="text-xl font-black text-[#2a2421] tabular-nums crt-glow">
+              ₹{priceVal.toLocaleString()}
             </p>
           </div>
           <div className="text-right">
-            <span className="inline-flex items-center gap-1 text-[11px] text-gray-400">
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              {auction.bidsCount} bids
+            <span className="inline-flex items-center gap-1 text-[11px] text-[#7da89f]">
+              <span className="inline-block w-2.5 h-2.5 bg-current border border-[#2a2421]"></span>
+              {auction.bidsCount} BIDS
             </span>
           </div>
         </div>
 
-        <div className="mt-2.5 pt-2.5 border-t border-gray-100 flex items-center justify-between">
-          <p className="text-[11px] text-gray-400">
-            by {auction?.sellerName || auction?.seller?.name}
+        <div className="mt-3 pt-2 border-t border-[#2a2421]/20 flex items-center justify-between text-[10px]">
+          <p className="text-[#2a2421]/50 font-medium">
+            BY: {auction?.sellerName || auction?.seller?.name}
           </p>
-          <span className="text-[11px] font-medium text-indigo-500 group-hover:text-indigo-600 transition-colors">
-            View &rarr;
+          <span className="font-bold text-[#7da89f] group-hover:underline">
+            GO TO LOBBY &rarr;
           </span>
         </div>
       </div>

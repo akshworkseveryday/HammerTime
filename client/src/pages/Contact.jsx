@@ -43,115 +43,67 @@ export const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#fdfaf2] text-[#2a2421] font-mono">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-indigo-100 rounded-xl mb-4">
-            <svg
-              className="w-6 h-6 text-indigo-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              />
-            </svg>
+          <div className="inline-flex items-center justify-center w-12 h-12 border-2 border-[#2a2421] bg-[#fdfaf2] text-[#2a2421] mb-4 text-xl shadow-[2px_2px_0px_0px_#f2785d]">
+            ✉️
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Get in Touch</h1>
-          <p className="text-gray-500 mt-2 max-w-md mx-auto">
-            Have a question or feedback? We&apos;d love to hear from you.
+          <h1 className="text-3xl font-bold uppercase tracking-wider text-[#2a2421] crt-glow">
+            CONTACT CENTER
+          </h1>
+          <p className="text-xs text-[#2a2421]/50 mt-2 max-w-md mx-auto uppercase">
+            Have a question or feedback? Initiate a message transmission.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* Info cards */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-6">
+          <div className="lg:col-span-2 space-y-5">
+            <div className="retro-card p-5">
               <div className="flex items-start gap-4">
-                <div className="bg-indigo-50 p-2.5 rounded-xl shrink-0">
-                  <svg
-                    className="w-5 h-5 text-indigo-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
+                <div className="w-9 h-9 border-2 border-[#2a2421] text-[#f2785d] flex items-center justify-center text-sm font-bold uppercase">
+                  @
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900">
-                    Email Us
+                  <h3 className="text-xs font-bold text-[#2a2421] uppercase tracking-wider">
+                    Email Stream
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">hi@ihavetech.com</p>
+                  <p className="text-[11px] text-[#2a2421]/75 mt-1 uppercase">
+                    Submit form to initiate transfer
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-6">
-              <div className="flex items-start gap-4">
-                <div className="bg-emerald-50 p-2.5 rounded-xl shrink-0">
-                  <svg
-                    className="w-5 h-5 text-emerald-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+            
+            <div className="retro-card-cyan p-5">
+              <div className="flex items-start gap-4 text-[#2a2421]">
+                <div className="w-9 h-9 border-2 border-[#2a2421] text-[#7da89f] flex items-center justify-center text-sm font-bold uppercase">
+                  T
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900">
-                    Response Time
+                  <h3 className="text-xs font-bold text-[#2a2421] uppercase tracking-wider">
+                    Response Window
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-[11px] text-[#2a2421]/75 mt-1 uppercase">
                     Usually within 24 hours
                   </p>
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-6">
-              <div className="flex items-start gap-4">
-                <div className="bg-amber-50 p-2.5 rounded-xl shrink-0">
-                  <svg
-                    className="w-5 h-5 text-amber-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
+
+            <div className="retro-card-pink p-5">
+              <div className="flex items-start gap-4 text-[#2a2421]">
+                <div className="w-9 h-9 border-2 border-[#2a2421] text-[#ffb09c] flex items-center justify-center text-sm font-bold uppercase">
+                  L
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900">
-                    Location
+                  <h3 className="text-xs font-bold text-[#2a2421] uppercase tracking-wider">
+                    Node Location
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Remote — Available worldwide
+                  <p className="text-[11px] text-[#2a2421]/75 mt-1 uppercase">
+                    Remote -- Distributed globally
                   </p>
                 </div>
               </div>
@@ -160,33 +112,21 @@ export const Contact = () => {
 
           {/* Form */}
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-7">
+            <div className="retro-card p-7">
               {submitted ? (
                 <div className="text-center py-12">
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-100 mb-5">
-                    <svg
-                      className="h-7 w-7 text-emerald-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
+                  <div className="inline-flex items-center justify-center w-14 h-14 border-2 border-[#2a2421] text-[#7da89f] mb-5 text-2xl bg-[#fdfaf2]">
+                    ✓
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h2 className="text-lg font-bold text-[#2a2421] uppercase tracking-wider mb-2">
                     Message Sent!
                   </h2>
-                  <p className="text-gray-500 mb-6">
-                    We&apos;ll get back to you as soon as possible.
+                  <p className="text-xs text-[#2a2421]/75 mb-6 uppercase">
+                    Transmission complete. We will process your ticket.
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="text-indigo-600 hover:text-indigo-700 font-medium text-sm"
+                    className="text-[#7da89f] font-bold text-xs uppercase hover:underline"
                   >
                     Send another message &rarr;
                   </button>
@@ -197,7 +137,7 @@ export const Contact = () => {
                     <div>
                       <label
                         htmlFor="name"
-                        className="block text-sm font-medium text-gray-700 mb-1.5"
+                        className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                       >
                         Name
                       </label>
@@ -208,16 +148,16 @@ export const Contact = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition"
-                        placeholder="Your name"
+                        className="retro-input w-full px-4 py-2.5"
+                        placeholder="NAME ID"
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-1.5"
+                        className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                       >
-                        Email
+                        Email Address
                       </label>
                       <input
                         type="email"
@@ -226,8 +166,8 @@ export const Contact = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition"
-                        placeholder="you@example.com"
+                        className="retro-input w-full px-4 py-2.5"
+                        placeholder="USER@HOST.COM"
                       />
                     </div>
                   </div>
@@ -235,9 +175,9 @@ export const Contact = () => {
                   <div>
                     <label
                       htmlFor="subject"
-                      className="block text-sm font-medium text-gray-700 mb-1.5"
+                      className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                     >
-                      Subject
+                      Subject Parameter
                     </label>
                     <input
                       type="text"
@@ -246,17 +186,17 @@ export const Contact = () => {
                       value={formData.subject}
                       onChange={handleChange}
                       required
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition"
-                      placeholder="How can we help?"
+                      className="retro-input w-full px-4 py-2.5"
+                      placeholder="MESSAGE SUBJECT"
                     />
                   </div>
 
                   <div>
                     <label
                       htmlFor="message"
-                      className="block text-sm font-medium text-gray-700 mb-1.5"
+                      className="block text-xs font-bold uppercase tracking-wider text-[#2a2421]/80 mb-1.5"
                     >
-                      Message
+                      Message Payload
                     </label>
                     <textarea
                       id="message"
@@ -265,30 +205,23 @@ export const Contact = () => {
                       onChange={handleChange}
                       required
                       rows={5}
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition resize-none"
-                      placeholder="Your message..."
+                      className="retro-input w-full px-4 py-2.5 resize-none"
+                      placeholder="TYPE MESSAGE CONTENT HERE..."
                     ></textarea>
                   </div>
 
                   {isError && (
-                    <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl">
-                      {isError}
+                    <div className="bg-[#f2785d]/10 border-2 border-[#2a2421] text-[#f2785d] text-xs px-4 py-2.5">
+                      [ALERT] {isError}
                     </div>
                   )}
 
                   <button
                     type="submit"
                     disabled={isPending}
-                    className="inline-flex items-center gap-2 bg-indigo-600 text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-indigo-700 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm shadow-indigo-200"
+                    className="retro-btn-cyan"
                   >
-                    {isPending ? (
-                      "Sending..."
-                    ) : (
-                      <>
-                        Send Message
-                        <FiSend className="h-4 w-4" />
-                      </>
-                    )}
+                    {isPending ? "TRANSMITTING..." : "SEND MESSAGE"}
                   </button>
                 </form>
               )}
@@ -299,3 +232,4 @@ export const Contact = () => {
     </div>
   );
 };
+export default Contact;

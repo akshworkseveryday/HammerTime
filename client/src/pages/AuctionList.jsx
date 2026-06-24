@@ -28,34 +28,23 @@ export const AuctionList = () => {
       : auctions?.filter((auction) => auction.itemCategory === filter);
 
   return (
-    <div className="min-h-screen bg-gray-50/80">
+    <div className="min-h-screen bg-[#fdfaf2] text-[#2a2421] font-mono">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-indigo-600 transition mb-6 group"
+          className="inline-flex items-center gap-2 border-2 border-[#2a2421] px-4 py-1.5 hover:bg-[#2a2421]/10 text-[#2a2421] transition mb-6 uppercase font-bold text-xs"
         >
-          <svg
-            className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          Back
+          &larr; BACK
         </button>
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Auctions</h1>
-          <p className="text-sm text-gray-400 mt-1">
-            Browse {pagination.total || 0} active listings
+          <h1 className="text-3xl font-bold uppercase tracking-wider text-[#2a2421] crt-glow">
+            ACTIVE STREAMS
+          </h1>
+          <p className="text-xs text-[#2a2421]/60 mt-1 uppercase">
+            BROWSING {pagination.total || 0} NETWORK LISTINGS
           </p>
         </div>
 
@@ -66,13 +55,13 @@ export const AuctionList = () => {
               <button
                 key={category}
                 onClick={() => setFilter(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                className={`px-3 py-1 border-2 text-xs font-bold uppercase transition-all ${
                   filter === category
-                    ? "bg-indigo-600 text-white shadow-sm"
-                    : "bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:text-gray-900"
+                    ? "bg-[#f2785d] text-[#fdfaf2] border-[#2a2421] shadow-[2px_2px_0px_0px_#2a2421]"
+                    : "text-[#2a2421] border-[#2a2421] hover:bg-[#2a2421]/10 bg-[#fdfaf2]"
                 }`}
               >
-                {category.charAt(0).toUpperCase() + category.slice(1)}
+                {category}
               </button>
             ))}
           </div>
@@ -80,33 +69,17 @@ export const AuctionList = () => {
 
         {/* Results count */}
         <div className="mb-5">
-          <p className="text-sm text-gray-400">
-            {filter === "all" ? "All auctions" : filter}
-            <span className="ml-1 text-gray-300">
-              ({filteredAuctions.length})
-            </span>
+          <p className="text-xs text-[#2a2421]/50 uppercase">
+            FILTER: {filter} &gt;&gt; STREAM COUNT: {filteredAuctions.length}
           </p>
         </div>
 
         {filteredAuctions.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-2xl border border-gray-200/80 shadow-sm">
-            <svg
-              className="w-12 h-12 text-gray-200 mx-auto mb-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-              />
-            </svg>
-            <p className="text-gray-400">No auctions found in this category</p>
+          <div className="text-center py-20 bg-[#fdfaf2] border-2 border-dashed border-[#2a2421]/30">
+            <p className="text-xs text-[#f2785d] uppercase">NO SEQUENCES DETECTED IN THIS CATEGORY</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredAuctions.map((auction) => (
               <AuctionCard key={auction._id} auction={auction} />
             ))}
@@ -115,23 +88,23 @@ export const AuctionList = () => {
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-10">
+          <div className="flex items-center justify-center gap-3 mt-10">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="px-4 py-2 text-sm font-medium rounded-xl border border-gray-200 bg-white text-gray-600 hover:border-indigo-300 hover:text-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              className="px-3 py-1.5 text-xs font-bold uppercase border-2 border-[#2a2421] bg-[#fdfaf2] text-[#2a2421] hover:bg-[#2a2421]/10 disabled:opacity-40 disabled:cursor-not-allowed transition"
             >
-              Previous
+              PREV
             </button>
             {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(
               (p) => (
                 <button
                   key={p}
                   onClick={() => setPage(p)}
-                  className={`w-10 h-10 rounded-xl text-sm font-semibold transition ${
+                  className={`w-9 h-9 border-2 text-xs font-bold uppercase transition ${
                     p === page
-                      ? "bg-indigo-600 text-white shadow-sm"
-                      : "bg-white text-gray-600 border border-gray-200 hover:border-indigo-300 hover:text-indigo-600"
+                      ? "bg-[#f2785d] text-[#fdfaf2] border-[#2a2421] shadow-[2px_2px_0px_0px_#2a2421]"
+                      : "bg-[#fdfaf2] text-[#2a2421] border-[#2a2421] hover:bg-[#2a2421]/10"
                   }`}
                 >
                   {p}
@@ -143,9 +116,9 @@ export const AuctionList = () => {
                 setPage((p) => Math.min(pagination.totalPages, p + 1))
               }
               disabled={page === pagination.totalPages}
-              className="px-4 py-2 text-sm font-medium rounded-xl border border-gray-200 bg-white text-gray-600 hover:border-indigo-300 hover:text-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              className="px-3 py-1.5 text-xs font-bold uppercase border-2 border-[#2a2421] bg-[#fdfaf2] text-[#2a2421] hover:bg-[#2a2421]/10 disabled:opacity-40 disabled:cursor-not-allowed transition"
             >
-              Next
+              NEXT
             </button>
           </div>
         )}

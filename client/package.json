@@ -1,9 +1,9 @@
 {
-  "name": "auction-client",
+  "name": "hammertime-client",
   "private": true,
   "version": "2.0.2",
   "type": "module",
-  "description": "Frontend of Auction Web App",
+  "description": "HammerTime frontend — real-time auction platform",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",

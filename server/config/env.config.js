@@ -8,12 +8,15 @@ export const env = {
   mongo_uri: process.env.MONGO_URL,
   jwt_secret: process.env.JWT_SECRET,
   jwt_expires_in: process.env.JWT_EXPIRES_IN || "7d",
-  cookie_domain: process.env.COOKIE_DOMAIN, // e.g., ".ihavetech.com" for cross-subdomain
+  cookie_domain: process.env.COOKIE_DOMAIN,
   cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
   cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
   cloudinary_url: process.env.CLOUDINARY_URL,
   resend_api_key: process.env.RESEND_API_KEY,
+  site_url: process.env.SITE_URL || process.env.ORIGIN,
+  contact_from_email: process.env.CONTACT_FROM_EMAIL,
+  contact_to_email: process.env.CONTACT_TO_EMAIL,
 };
 
 // Validate critical environment variables at startup

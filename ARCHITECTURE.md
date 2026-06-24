@@ -1,6 +1,6 @@
 # 🏗️ Architecture
 
-A comprehensive guide to the **Online Auction System** architecture — a full-stack MERN application featuring real-time bidding powered by WebSockets.
+A comprehensive guide to the **HammerTime** architecture — a full-stack MERN application featuring real-time bidding powered by WebSockets.
 
 ---
 
@@ -31,7 +31,7 @@ A comprehensive guide to the **Online Auction System** architecture — a full-s
 
 ## System Overview
 
-The Online Auction System is a two-tier web application:
+HammerTime is a two-tier web application:
 
 | Layer | Description |
 |-------|-------------|
@@ -123,7 +123,7 @@ The Online Auction System is a two-tier web application:
 ## Directory Structure
 
 ```
-online-auction-system/
+HammerTime/
 ├── client/                          # Frontend (React SPA)
 │   ├── public/                      # Static assets
 │   ├── src/
@@ -754,6 +754,6 @@ auctionById controller checks:
 
 <div align="center">
 
-*Built with ❤️ by [Avnish Kumar](https://github.com/theavnishkumar)*
+*HammerTime — [akshworkseveryday/HammerTime](https://github.com/akshworkseveryday/HammerTime)*
 
 </div>

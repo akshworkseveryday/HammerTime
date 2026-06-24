@@ -1,7 +1,7 @@
 {
-  "name": "auction_system_server",
+  "name": "hammertime-server",
   "version": "2.0.2",
-  "description": "backend for online auction system",
+  "description": "HammerTime backend — real-time auction platform API",
   "main": "server.js",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js"
   },
-  "author": "Avnish Kumar",
+  "author": "akshworkseveryday",
   "license": "MIT",
   "type": "module",
   "dependencies": {
